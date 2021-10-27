@@ -16,4 +16,9 @@ public class MainController {
         return "index";
     }
 
+    @GetMapping("/visualize")
+    public String visualize() {
+        return "visualize";
+    }
+
 }

@@ -9,7 +9,7 @@
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
         crossorigin="anonymous">
-
+  <link href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}" rel="stylesheet"/>
 </head>
 <body>
 <!-- create navigation bar ( header) -->
@@ -38,10 +38,15 @@
 <br>
 
 <div class="container">
-  <h1>Registration and Login with Spring Boot, Spring Security,
-    Thymeleaf, Hibernate and MySQL</h1>
+  <h1>Your tool to visualize user story</h1>
 
   Welcome <span sec:authentication="principal.firstName">Firstname</span>
 </div>
+<div class="container">
+  <button type="button">
+    <a th:href="@{/visualize}">Start visualization</a>
+  </button>
+</div>
+
 </body>
 </html>
