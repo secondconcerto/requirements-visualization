@@ -1,15 +1,104 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
->
+<html xmlns:th="http://thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <title>dashboard</title>
-    <!--<title>th:text="${page.title}</title>-->
+    <meta charset="ISO-8859-1">
+    <title>Requirements Visualization App</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}" rel="stylesheet"/>
 </head>
 <body>
-Admin dashboard
-<!--<div th:substituteby="header::header"></div>
-<p th:text="#{dashboard.post.total_count(${post_count})}"></p>
-<div th:substituteby="footer::footer"></div>-->
 
-</body>
-</html>
+<!-- create navigation bar ( header) -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">Registration and
+                Login Module</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<br>
+<br>
+
+<div class="center">
+    <h1>Let's start visualization</h1>
+</div>
+
+<div class="container">
+    <div class="center">
+        <div class="row">
+            <h2>Upload your dictionary</h2>
+            <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+            <form method="post" th:action="@{/uploadFile}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="file" name="file" class="form-control-file">
+                </div>
+                <button type="submit" class="btn btn-primary">Upload File</button>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="center">
+        <div class="row">
+            <form th:action="@{/uploadStory}" method="post" th:object="${story}">
+                <div class="form-group">
+                    <label class="control-label" for="persona"> As a : </label>
+                    <input id="persona" class="form-control" th:field="*{persona}"
+                           required autofocus="autofocus"/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="action"> I want to : </label>
+                    <input id="action" class="form-control" th:field="*{action}"
+                           required autofocus="autofocus"/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="benefit"> So that : </label>
+                    <textarea id="benefit" class="form-control" th:field="*{benefit}"
+                              required autofocus="autofocus"></textarea>
+                </div>
+                <input type="submit" value="Submit"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--<div class="center">
+    <button type="button">
+        <a th:href="@{/visualize}">Start visualization</a>
+    </button>
+</div>-->
+<br>
+<div class="center">
+    <form action="#" th:action="@{/startVisualize}" th:method="post">
+        <button type="submit" id="startButton">Start visualization</button>
+    </form>
+</div>
+
+
+
+
+
+
+
+
