@@ -1,4 +1,4 @@
-package com.app.requirements.visualization.web;
+package com.app.requirements.visualization.web.controllers;
 
 import com.app.requirements.visualization.service.UserService;
 import com.app.requirements.visualization.web.dto.UserRegistrationDto;
