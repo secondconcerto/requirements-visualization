@@ -24,4 +24,9 @@ public class MainController {
         return "visualize";
     }
 
+    @GetMapping("/result")
+    public String result() {
+        return "result";
+    }
+
 }

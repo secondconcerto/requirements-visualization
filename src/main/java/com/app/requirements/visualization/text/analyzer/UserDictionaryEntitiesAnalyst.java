@@ -14,6 +14,9 @@ public class UserDictionaryEntitiesAnalyst {
 
     public void setUserDictionary(Map<String, String> userDictionary) {
         this.userDictionary = userDictionary;
+        mapOfRolesWithOptionalDescriptions.clear();
+        mapOfActionsWithOptionalDescriptions.clear();
+        mapOfActionBenefitWithOptionalDescriptions.clear();
     }
 
     public Map<String, String> lookForRolesInUserDictionary(List<String> foundRoles) {
@@ -25,7 +28,6 @@ public class UserDictionaryEntitiesAnalyst {
     }
 
     public Map<String, String> lookForActionsInUserDictionary(NavigableMap<String, String> firstPersonActionAction) {
-
         return getOptionalDescriptionMap(firstPersonActionAction, mapOfActionsWithOptionalDescriptions);
     }
 
@@ -36,22 +38,37 @@ public class UserDictionaryEntitiesAnalyst {
     private Map<String, String> getOptionalDescriptionMap(NavigableMap<String, String> actionMap, Map<String, String> mapWithOptionalDescription) {
 
         String action = actionMap.get("action");
-        action = action.toLowerCase();
-        mapOfActionsWithOptionalDescriptions.put(action, userDictionary.getOrDefault(action, ""));
+        lookUpInUserMap(mapWithOptionalDescription, action);
 
         String complement = actionMap.get("complement");
-        String[] tokenizedComplement = complement
+        lookUpInUserMap(mapWithOptionalDescription, complement);
+        return mapWithOptionalDescription;
+    }
+
+    private void lookUpInUserMap(Map<String, String> mapWithOptionalDescription, String token) {
+        String[] tokenizedArray = token
                 .split("[[ ]*|[,]*|[\\.]*|[:]*|[/]*|[!]*|[?]*|[+]*]+");
 
-        for (String word : tokenizedComplement) {
-            complement = complement.toLowerCase();
-            String finalComplement = complement;
-            mapWithOptionalDescription.put(complement, userDictionary.keySet().stream()
-                    .filter(entry -> entry.contains(finalComplement))
+        for (String word : tokenizedArray) {
+            word = word.toLowerCase();
+            String finalComplement = word;
+            mapWithOptionalDescription.put(userDictionary.entrySet().stream()
+                    .filter(entry -> check(entry.getKey(), finalComplement))
+                    .map(Map.Entry::getValue)
                     .findFirst()
-                    .orElse(""));
+                    .orElse(""), word);
         }
+    }
 
-        return mapOfActionsWithOptionalDescriptions;
+    private boolean check(String userDictionaryKey, String finalComplement) {
+        String[] tokenizedArray = userDictionaryKey
+                .split("[[ ]*|[,]*|[\\.]*|[:]*|[/]*|[!]*|[?]*|[+]*]+");
+        for (String word : tokenizedArray) {
+            word = word.toLowerCase();
+            if (word.equals(finalComplement)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
