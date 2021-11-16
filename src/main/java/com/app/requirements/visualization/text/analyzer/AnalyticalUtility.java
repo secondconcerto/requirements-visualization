@@ -52,8 +52,8 @@ public class AnalyticalUtility {
     }
 
     private void findKeywordsInUserDictionary() {
-        userDictionaryEntitiesAnalyst.lookForRolesInUserDictionary(foundRoles);
-        userDictionaryEntitiesAnalyst.lookForActionsInUserDictionary(firstPersonActionAction);
-        userDictionaryEntitiesAnalyst.lookForComplementsInUserDictionary(firstPersonBenefitAction);
+        Map<String, String> rolesInUserDictionary = userDictionaryEntitiesAnalyst.lookForRolesInUserDictionary(foundRoles);
+        Map<String, String> actionsInUserDictionary = userDictionaryEntitiesAnalyst.lookForActionsInUserDictionary(firstPersonActionAction);
+        Map<String, String> benefitActionsInUserDictionary = userDictionaryEntitiesAnalyst.lookForComplementsInUserDictionary(firstPersonActionAction);
     }
 }

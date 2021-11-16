@@ -2,51 +2,59 @@
 <html xmlns:th="http://thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <meta charset="ISO-8859-1">
+    <meta charset="utf-8">
     <title>Requirements Visualization App</title>
 
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
           crossorigin="anonymous">
-    <link href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}" rel="stylesheet"/>
+  <link href="../static/css/index-style.css" th:href="@{/css/index-style.css}" rel="stylesheet"/>
 </head>
 <body>
-<!-- create navigation bar ( header) -->
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed"
-              data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-              aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span> <span
-              class="icon-bar"></span> <span class="icon-bar"></span> <span
-              class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#" th:href="@{/}">Registration and
-        Login Module</a>
-    </div>
-    <div id="navbar" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
-      </ul>
-    </div>
+<input type="checkbox" id="ham-menu">
+<label for="ham-menu">
+  <div class="hide-des">
+    <span class="menu-line"></span>
+    <span class="menu-line"></span>
+    <span class="menu-line"></span>
+    <span class="menu-line"></span>
+    <span class="menu-line"></span>
+    <span class="menu-line"></span>
   </div>
-</nav>
 
-<br>
-<br>
+</label>
+<div class="full-page-green"></div>
+<div class="ham-menu">
+  <ul class="centre-text bold-text">
+    <li><a href="#" th:href="@{/}">Home</a></li>
+    <li><a th:href="@{/visualize}">Start visualization</a></li>
+    <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
 
-<div class="container">
-  <h1>Your tool to visualize user story</h1>
-
-  Welcome <span sec:authentication="principal.firstName">Firstname</span>
-</div>
-<div class="container">
-  <button type="button">
-    <a th:href="@{/visualize}">Start visualization</a>
-  </button>
+  </ul>
 </div>
 
+<div class="perspective-text">
+  <div class="perspective-line">
+    <p></p>
+    <p>Your tool</p>
+  </div>
+  <div class="perspective-line">
+    <p>Your tool</p>
+    <p>to visualize</p>
+  </div>
+  <div class="perspective-line">
+    <p>to visualize</p>
+    <p>user</p>
+  </div>
+  <div class="perspective-line">
+    <p>user</p>
+    <p>story</p>
+  </div>
+  <div class="perspective-line">
+    <p>story</p>
+    <p></p>
+  </div>
+</div>
 </body>
 </html>
