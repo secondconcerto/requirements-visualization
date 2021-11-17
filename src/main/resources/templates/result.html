@@ -33,5 +33,28 @@
 
     </ul>
 </div>
+<div class="container">
+    <div class="Header align-self-center"> Let's start visualization</div>
+    <div class="Upload-title">
+        <div class="title"> Result:</div>
+    </div>
+    <div class="Upload-file">
+        <tr th:each="string : ${requirement.stringList}">
+            <td><span th:text="${string}"></span></td>
+            <br>
+        </tr>
+        <div>
+            <br>
+            <a>Some graphical data visualization: </a>
+            <table style="width:100%">
+                <tr>
+                    <th:block th:each="column : ${requirement.columnList}">
+                        <td><span th:text="${column}"></span></td>
+                    </th:block>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
 </html>

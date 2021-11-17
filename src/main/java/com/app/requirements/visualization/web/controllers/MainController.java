@@ -23,10 +23,4 @@ public class MainController {
         model.addAttribute("story", new UserStoryFormDto());
         return "visualize";
     }
-
-    @GetMapping("/result")
-    public String result() {
-        return "result";
-    }
-
 }

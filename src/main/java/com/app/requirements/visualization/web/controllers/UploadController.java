@@ -4,6 +4,7 @@ import com.app.requirements.visualization.text.analyzer.AnalyticalUtility;
 import com.app.requirements.visualization.text.analyzer.mappers.FileToMapMapper;
 import com.app.requirements.visualization.text.analyzer.mappers.UserStoryFormMapper;
 import com.app.requirements.visualization.web.dto.UserStoryFormDto;
+import com.app.requirements.visualization.web.models.Requirements;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -73,14 +73,16 @@ public class UploadController {
     }
 
     @PostMapping(value = "/startVisualize")
-    public String startVisualization() throws IOException {
-        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
-        List<String> finalRequirements;
+    public String startVisualization(RedirectAttributes redirectAttributes) throws IOException {
+        Map<String, List<String>> finalRequirements;
         if (userDictionary.isEmpty() || userStoryMap.isEmpty()) {
             return FALSE;
         } else {
             finalRequirements = analyticalUtility.startAnalysis(userStoryMap, userDictionary, userStoryAll);
-            redirectAttributes.addFlashAttribute(finalRequirements);
+            Requirements requirements = new Requirements();
+            requirements.setStringList(finalRequirements.get("text"));
+            requirements.setColumnList(finalRequirements.get("columns"));
+            redirectAttributes.addFlashAttribute("requirement", requirements);
             return "redirect:/result";
         }
 

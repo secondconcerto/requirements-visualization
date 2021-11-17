@@ -22,7 +22,6 @@ public class DictionaryDivResources {
                 .build();
 
         Response response = client.newCall(request).execute();
-
         if (response.isSuccessful()) {
             return extractSynonymsFromResponse(response, wordToSearch);
         }

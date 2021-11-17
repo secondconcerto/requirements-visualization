@@ -31,7 +31,7 @@ public class AnalyticalUtility {
     private Map<String, String> benefitInUserDictionary = new HashMap<>();
     private Map<String, List<String>> synonymMap = new HashMap<String, List<String>>();
 
-    public List<String> startAnalysis(Map<String, String> userStoryMap, Map<String, String> userDictionary, String userStoryAll) throws IOException {
+    public Map<String, List<String>> startAnalysis(Map<String, String> userStoryMap, Map<String, String> userDictionary, String userStoryAll) throws IOException {
         initializeUtility();
         TextAnalyticsClient client = initializeNER();
         tokenizedUserStoryMap.putAll(userStoryMap);
