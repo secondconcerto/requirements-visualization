@@ -23,5 +23,4 @@ public class MainController {
         model.addAttribute("story", new UserStoryFormDto());
         return "visualize";
     }
-
 }

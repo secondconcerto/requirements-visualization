@@ -16,6 +16,7 @@ public class FileToMapMapper {
         InputStream inputStream = new BufferedInputStream(file.getInputStream());
         Map<String, String> map = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
                 .lines()
+                .map(String::toLowerCase)
                 .collect(Collectors.toMap(k -> k.split(":")[0], v -> v.split(":")[1]));
         return map;
     }

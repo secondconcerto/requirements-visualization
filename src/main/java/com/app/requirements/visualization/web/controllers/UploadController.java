@@ -4,6 +4,7 @@ import com.app.requirements.visualization.text.analyzer.AnalyticalUtility;
 import com.app.requirements.visualization.text.analyzer.mappers.FileToMapMapper;
 import com.app.requirements.visualization.text.analyzer.mappers.UserStoryFormMapper;
 import com.app.requirements.visualization.web.dto.UserStoryFormDto;
+import com.app.requirements.visualization.web.models.Requirements;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -15,7 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 public class UploadController {
@@ -28,7 +31,7 @@ public class UploadController {
 
     Map<String, String> userDictionary = new HashMap<>();
     Map<String, String> userStoryMap = new HashMap<>();
-    String userStoryAll = new String();
+    String userStoryAll = "";
 
     public UploadController() {
         super();
@@ -41,7 +44,7 @@ public class UploadController {
             attributes.addFlashAttribute("message", "Please select a txt file to upload.");
             return "redirect:/visualize";
         }
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         try {
             userDictionary.clear();
             userDictionary = fileToMapMapper.mapFile(file);
@@ -54,7 +57,7 @@ public class UploadController {
     }
 
     private boolean validate(MultipartFile file) {
-        return file.isEmpty() || !FilenameUtils.getExtension(file.getOriginalFilename()).equals("txt");
+        return file.isEmpty() || !Objects.equals(FilenameUtils.getExtension(file.getOriginalFilename()), "txt");
     }
 
     @ModelAttribute("story")
@@ -70,11 +73,18 @@ public class UploadController {
     }
 
     @PostMapping(value = "/startVisualize")
-    public String startVisualization() throws IOException {
-        if (userDictionary.isEmpty() || userStoryMap.isEmpty())
+    public String startVisualization(RedirectAttributes redirectAttributes) throws IOException {
+        Map<String, List<String>> finalRequirements;
+        if (userDictionary.isEmpty() || userStoryMap.isEmpty()) {
             return FALSE;
-        else
-            analyticalUtility.startAnalysis(userStoryMap, userDictionary, userStoryAll);
-        return "redirect:/visualize";
+        } else {
+            finalRequirements = analyticalUtility.startAnalysis(userStoryMap, userDictionary, userStoryAll);
+            Requirements requirements = new Requirements();
+            requirements.setStringList(finalRequirements.get("text"));
+            requirements.setColumnList(finalRequirements.get("columns"));
+            redirectAttributes.addFlashAttribute("requirement", requirements);
+            return "redirect:/result";
+        }
+
     }
 }
