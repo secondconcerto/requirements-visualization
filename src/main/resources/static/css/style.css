@@ -181,7 +181,6 @@ p {
     line-height: 1.5em;
     word-spacing: 0.5em;
     letter-spacing: 0.1em;
-    font-family: "OpenSansCondensed-Light";
 }
 
 a {
@@ -207,7 +206,6 @@ a::after {
     line-height: 1.5em;
     word-spacing: 0.5em;
     letter-spacing: 0.1em;
-    font-family: "OpenSansCondensed-Bold", sans-serif;
 }
 
 .title {
@@ -215,7 +213,6 @@ a::after {
     line-height: 1.5em;
     word-spacing: 0.5em;
     letter-spacing: 0.1em;
-    font-family: "OpenSansCondensed-Bold", sans-serif;
     color: #ee7c26;
     padding: 10px;
 }
@@ -225,7 +222,6 @@ a::after {
     line-height: 1.5em;
     word-spacing: 0.5em;
     letter-spacing: 0.1em;
-    font-family: "Patua One";
 }
 
 .centre-text {
@@ -257,7 +253,6 @@ a::after {
     position: relative;
     bottom: 0;
     color: #ee8548;
-    font-family: Arial;
     font-size: 58px;
     font-weight: 900;
     letter-spacing: -2px;
@@ -267,7 +262,6 @@ a::after {
 .Upload-title {
     grid-area: Upload-title;
     color: #ee8548;
-    font-family: Arial;
     font-size: 58px;
     font-weight: 900;
     letter-spacing: -2px;
@@ -280,7 +274,6 @@ a::after {
 
 .upload-button {
     color: #c14c08;
-    font-family: Arial;
     font-size: 18px;
     font-weight: 700;
     letter-spacing: 2px;
@@ -295,7 +288,6 @@ a::after {
 .upload-title-2 {
     grid-area: upload-title-2;
     color: #ee8548;
-    font-family: Arial;
     font-size: 58px;
     font-weight: 900;
     letter-spacing: -2px;

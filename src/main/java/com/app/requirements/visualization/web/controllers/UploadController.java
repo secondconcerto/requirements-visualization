@@ -6,6 +6,7 @@ import com.app.requirements.visualization.text.analyzer.mappers.UserStoryFormMap
 import com.app.requirements.visualization.web.dto.UserStoryFormDto;
 import com.app.requirements.visualization.web.models.Requirements;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -37,23 +38,19 @@ public class UploadController {
         super();
     }
 
-    @PostMapping("/uploadFile")
-    public String uploadFile(@RequestParam("file") MultipartFile file, RedirectAttributes attributes) {
-
+    @PostMapping(value = {"/uploadFile"}, consumes = {"multipart/form-data"})
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
         if (validate(file)) {
-            attributes.addFlashAttribute("message", "Please select a txt file to upload.");
-            return "redirect:/visualize";
+            return ResponseEntity.ok("Please select a txt file to upload.");
         }
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         try {
             userDictionary.clear();
             userDictionary = fileToMapMapper.mapFile(file);
         } catch (IOException exception) {
-            attributes.addFlashAttribute("message", "Unfortunately, file has a wrong format. Try again.");
-            return "redirect:/visualize";
+            return ResponseEntity.ok("Unfortunately, there was a problem with loading chosen file. Try again with a different file.");
         }
-        attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
-        return "redirect:/visualize";
+        return ResponseEntity.ok("You successfully uploaded " + fileName + '!');
     }
 
     private boolean validate(MultipartFile file) {
@@ -66,10 +63,10 @@ public class UploadController {
     }
 
     @PostMapping(value = "/uploadStory")
-    public String uploadUserStory(@ModelAttribute("story") UserStoryFormDto userStoryFormDto) {
+    public ResponseEntity<?> uploadUserStory(@ModelAttribute("story") UserStoryFormDto userStoryFormDto) {
         userStoryMap = userStoryFormMapper.mapFormToMap(userStoryFormDto);
         userStoryAll = userStoryFormMapper.mapFormToString(userStoryFormDto);
-        return "redirect:/visualize";
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(value = "/startVisualize")

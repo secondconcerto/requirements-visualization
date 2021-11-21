@@ -10,6 +10,9 @@
           crossorigin="anonymous">
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
     <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+
 </head>
 <body>
 <input type="checkbox" id="ham-menu">
@@ -30,7 +33,6 @@
         <li><a href="#" th:href="@{/}">Home</a></li>
         <li><a th:href="@{/visualize}">Start visualization</a></li>
         <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
-
     </ul>
 </div>
 
@@ -40,24 +42,24 @@
         <div class="title"> 1. Upload your dictionary</div>
     </div>
     <div class="Upload-file">
-        <form method="post" th:action="@{/uploadFile}" enctype="multipart/form-data">
             <input id="file" type="file" name="file" style="display:none; "/>
-            <input class="upload-button" type="button" value="Choose Files!"
-                   onclick="document.getElementById('file').click();"/>
-            <button type="submit" class="upload-button">Upload File</button>
-        </form>
+        <input class="upload-button" type="button" value="Choose Files!"
+               onclick="document.getElementById('file').click();"/>
+        <button onclick="uploadFile()" class="upload-button">Upload File</button>
     </div>
     <div class="upload-message">
         <div class="file-message">
-            <p th:text="${message}" th:if="${message ne null}"></p>
+            <p id='msg'></p>
         </div>
     </div>
     <div class="upload-title-2">
         <div class="title">2. Enter user story
         </div>
     </div>
+
     <div class="enter-story">
-        <form th:action="@{/uploadStory}" method="post" th:object="${story}">
+        <!-- th:action="@{/uploadStory}" method="post" th:object="${story}"-->
+        <form id="myForm" th:object="${story}">
             <div class="form-group">
                 <label class="control-label" for="persona"> As a : </label>
                 <input id="persona" class="form-control" th:field="*{persona}"
@@ -73,7 +75,7 @@
                 <textarea id="benefit" class="form-control" th:field="*{benefit}"
                           required autofocus="autofocus"></textarea>
             </div>
-            <input type="submit" value="Submit" class="upload-button">
+            <input id="userForm" type="button" value="Submit" class="upload-button">
         </form>
     </div>
     <div class="button-start">
@@ -84,3 +86,40 @@
 </div>
 </body>
 </html>
+
+<script>
+    function uploadFile() {
+        var formData = new FormData();
+        var file = $('#file')[0].files[0];
+
+        formData.append("file", file);
+        $.ajax({
+            type: "POST",
+            url: "/uploadFile",
+            data: formData,
+            enctype: 'multipart/form-data',
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                $('#msg').html(data).fadeIn('slow');
+            }
+        });
+    };
+</script>
+<script>
+    $(function () {
+        $('#userForm').click(uploadForm);
+    });
+</script>
+<script>
+    function uploadForm() {
+        $.ajax({
+            method: "POST",
+            url: "/uploadStory",
+            data: $('#myForm').serialize(),
+            success: function () {
+                console.log('yess')
+            }
+        });
+    };
+</script>
