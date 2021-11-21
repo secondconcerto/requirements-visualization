@@ -39,12 +39,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //http.csrf().disable().cors();
         http.authorizeRequests().antMatchers(
                 "/registration**",
                 "/js/**,",
                 "/css/**,",
                 "/img/**,").permitAll()
                 .anyRequest().authenticated()
+                .and().csrf().disable().cors()
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -56,7 +58,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout")
         .permitAll();
-
     }
 
 }
