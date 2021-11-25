@@ -68,6 +68,8 @@ label[for="ham-menu"] {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-weight: normal;
+    font-family: sans-serif;
 }
 
 .ham-menu > ul {
@@ -79,6 +81,14 @@ label[for="ham-menu"] {
 }
 
 .ham-menu > ul > li {
+    font-size: 5rem;
+    white-space: nowrap;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    color: rgb(97, 97, 97);
+}
+
+.ham-menu > ul > li > a {
     font-size: 5rem;
     white-space: nowrap;
     letter-spacing: 0.15em;

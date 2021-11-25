@@ -12,26 +12,7 @@
   <link href="../static/css/index-style.css" th:href="@{/css/index-style.css}" rel="stylesheet"/>
 </head>
 <body>
-<input type="checkbox" id="ham-menu">
-<label for="ham-menu">
-  <div class="hide-des">
-    <span class="menu-line"></span>
-    <span class="menu-line"></span>
-    <span class="menu-line"></span>
-    <span class="menu-line"></span>
-    <span class="menu-line"></span>
-    <span class="menu-line"></span>
-  </div>
-
-</label>
-<div class="full-page-green"></div>
-<div class="ham-menu">
-  <ul class="centre-text bold-text">
-    <li><a href="#" th:href="@{/}">Home</a></li>
-    <li><a th:href="@{/visualize}">Start visualization</a></li>
-    <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
-
-  </ul>
+<div th:replace="fragments/menu :: menu">
 </div>
 
 <div class="perspective-text">
