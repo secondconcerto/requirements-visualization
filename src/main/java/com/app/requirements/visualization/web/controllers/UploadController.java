@@ -66,7 +66,7 @@ public class UploadController {
     public ResponseEntity<?> uploadUserStory(@ModelAttribute("story") UserStoryFormDto userStoryFormDto) {
         userStoryMap = userStoryFormMapper.mapFormToMap(userStoryFormDto);
         userStoryAll = userStoryFormMapper.mapFormToString(userStoryFormDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("You successfully uploaded your story!");
     }
 
     @PostMapping(value = "/startVisualize")

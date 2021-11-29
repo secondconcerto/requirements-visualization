@@ -145,11 +145,14 @@ public class NLPResources {
     private void findComplementForGivenPart(Map<String, String> tokenizedUserStoryMap, String token, NavigableMap<String, String> firstPersonActionAction) {
         String actionToken = tokenizedUserStoryMap.get(token);
         Collection<String> allActionActions = firstPersonActionAction.values();
-        int firstIndex = actionToken.indexOf(String.valueOf(allActionActions.toArray()[0]));
-        int endIndex = firstIndex + allActionActions.toArray()[0].toString().length();
-        String complement = actionToken.substring(endIndex + 1);
-        firstPersonActionAction.put("complement", complement);
-
+        int firstIndex;
+        int endIndex;
+        if (!allActionActions.isEmpty()) {
+            firstIndex = actionToken.indexOf(String.valueOf(allActionActions.toArray()[0]));
+            endIndex = firstIndex + allActionActions.toArray()[0].toString().length();
+            String complement = actionToken.substring(endIndex + 1);
+            firstPersonActionAction.put("complement", complement);
+        }
 
         //TODO pamietac ze nie moze byc wiecej niz 1 czasownik w action
     }

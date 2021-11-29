@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+<html xmlns:th="http://thymeleaf.org"
 >
 <head>
     <meta charset="utf-8">
@@ -13,6 +13,7 @@
     <link href="../static/css/visualization.css" th:href="@{/css/visualization.css}" rel="stylesheet"/>
     <link href="../static/css/visualization.css" th:href="@{/css/visualization.css}" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
 
 
 </head>
@@ -31,8 +32,8 @@
         <div class="visualization-container">
             <!-- progressbar -->
             <ul id="progressbar">
-                <li class="active fa-file-word" id="account"><strong>Account</strong></li>
-                <li id="personal"><strong>Personal</strong></li>
+                <li class="active fa-file-word" id="account"><strong>File</strong></li>
+                <li id="personal"><strong>Story</strong></li>
             </ul> <!-- fieldsets -->
             <hr class="hr">
             <fieldset class=" align-items-center flex-column start-flex">
@@ -82,8 +83,14 @@
                                 <textarea id="benefit" class="form-control" th:field="*{benefit}"
                                           required autofocus="autofocus"></textarea>
                             </div>
-                            <div class="align-self-center">
-                                <button class="btn btn-success" onClick="uploadForm()">Submit</button>
+                            <div class="row d-flex">
+                                <div class="col col-2 d-flex justify-content-center">
+                                    <!--<button id="userForm" class="btn btn-success">Submit</button>-->
+                                    <input id="userForm" type="button" value="Submit" class="btn btn-success button">
+                                </div>
+                                <div class="col col-8 text-end">
+                                    <span id="msg2" class="h4"></span>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -170,13 +177,18 @@
     };
 </script>
 <script>
+    $(function () {
+        $('#userForm').click(uploadForm);
+    });
+</script>
+<script>
     function uploadForm() {
         $.ajax({
             method: "POST",
             url: "/uploadStory",
             data: $('#myForm').serialize(),
-            success: function () {
-                console.log('yess')
+            success: function (data) {
+                $('#msg2').html(data).fadeIn('slow');
             }
         });
     };

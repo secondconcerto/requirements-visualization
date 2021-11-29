@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+<html xmlns:th="http://thymeleaf.org"
 >
 <head>
     <meta charset="utf-8">
@@ -9,10 +9,12 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
           crossorigin="anonymous">
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
-    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link href="../static/css/visualization.css" th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
 <body>
-<input type="checkbox" id="ham-menu">
+<div th:replace="fragments/menu :: menu">
+</div>
+<!--<input type="checkbox" id="ham-menu">
 <label for="ham-menu">
     <div class="hide-des">
         <span class="menu-line"></span>
@@ -32,9 +34,14 @@
         <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
 
     </ul>
-</div>
+</div>-->
 <div class="container">
-    <div class="Header align-self-center"> Let's start visualization</div>
+    <div class="row">
+        <div class="jumbotron">
+            <h1 class="blue">Let's start visualization</h1>
+            <h3 class="blue">It's just a few simple steps</h3>
+        </div>
+    </div>
     <div class="Upload-title">
         <div class="title"> Result:</div>
     </div>

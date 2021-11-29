@@ -113,7 +113,7 @@ html, body {
     color: #9E9E9E
 }
 
-.visualization-container input,
+/*.visualization-container input,*/
 .visualization-container textarea {
     padding: 0px 8px 4px 8px;
     border: none;
@@ -227,7 +227,7 @@ select.list-dt:focus {
 }
 
 #progressbar .active {
-    color: #9E9E9E
+    color: var(--text-color)
 }
 
 
@@ -237,22 +237,6 @@ select.list-dt:focus {
     width: 25%;
     float: left;
     position: relative
-}
-
-#progressbar #account:before {
-    content: "\f023"
-}
-
-#progressbar #personal:before {
-    content: "\f007"
-}
-
-#progressbar #payment:before {
-    content: "\f09d"
-}
-
-#progressbar #confirm:before {
-    content: "\f00c"
 }
 
 #progressbar li:before {
@@ -272,7 +256,7 @@ select.list-dt:focus {
     content: '';
     width: 100%;
     height: 2px;
-    background: lightgray;
+    background: var(--dark-green);
     position: absolute;
     left: 0;
     top: 25px;
@@ -445,3 +429,7 @@ label[for="ham-menu"] {
     transform: translateY(-17px) rotate(45deg);
 }
 
+#benefit {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
