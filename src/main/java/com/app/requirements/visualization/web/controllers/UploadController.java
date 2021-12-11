@@ -79,6 +79,7 @@ public class UploadController {
             Requirements requirements = new Requirements();
             requirements.setStringList(finalRequirements.get("text"));
             requirements.setColumnList(finalRequirements.get("columns"));
+            requirements.setUIList(finalRequirements.get("ui"));
             redirectAttributes.addFlashAttribute("requirement", requirements);
             return "redirect:/result";
         }

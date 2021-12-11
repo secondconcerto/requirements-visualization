@@ -1,33 +1,23 @@
 package com.app.requirements.visualization.text.analyzer.api;
 
-import com.azure.ai.textanalytics.TextAnalyticsClient;
-import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.core.credential.AzureKeyCredential;
+import opennlp.tools.namefind.NameFinderME;
+import opennlp.tools.namefind.TokenNameFinderModel;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.tokenize.Tokenizer;
 import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
+import opennlp.tools.util.Span;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class NLPResources {
 
-    private static final String KEY = "c20c7535495840e98928e30166916228";
-    private static final String ENDPOINT = "https://warszawa.cognitiveservices.azure.com/";
     private final Map<String, String> posTagMap = new HashMap<>();
-    private final List<CategorizedEntity> categorizedEntityList = new ArrayList<>();
     private final NavigableMap<String, String> firstPersonBenefitAction = new TreeMap<>();
     private final NavigableMap<String, String> firstPersonActionAction = new TreeMap<>();
 
@@ -39,17 +29,15 @@ public class NLPResources {
         return firstPersonActionAction;
     }
 
-    public TextAnalyticsClient authenticateClient() {
-        return new TextAnalyticsClientBuilder()
-                .credential(new AzureKeyCredential(KEY))
-                .endpoint(ENDPOINT)
-                .buildClient();
-    }
-
-    public List<CategorizedEntity> recognizeEntities(TextAnalyticsClient client, String text) {
-        //azure
-        // List<CategorizedEntity> categorizedEntityList = client.recognizeEntities(text).stream().collect(Collectors.toList());
-        return categorizedEntityList;
+    public List<String> recognizeEntities(String text) throws IOException {
+        try (InputStream modelIn = new FileInputStream("src/main/resources/en-ner-person.bin")) {
+            TokenNameFinderModel model = new TokenNameFinderModel(modelIn);
+            NameFinderME nameFinder = new NameFinderME(model);
+            String tempStory = text.replaceAll("[^a-zA-Z0-9]", " ");
+            String storyArray[] = tempStory.split(" ");
+            Span nameSpans[] = nameFinder.find(storyArray);
+            return Arrays.stream(nameSpans).map(span -> span.toString()).collect(Collectors.toList());
+        }
         //TODO to bedzie pierwszy reqiurement - ilość ról w aplikacji
     }
 

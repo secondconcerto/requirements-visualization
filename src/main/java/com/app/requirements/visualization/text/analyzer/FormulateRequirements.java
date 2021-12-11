@@ -16,6 +16,7 @@ public class FormulateRequirements {
     private final AppDictionary appDictionary = new AppDictionary();
 
     private final List<String> finalRequirements = new ArrayList<>();
+    private final List<String> UIRequirements = new ArrayList<>();
     private Map<String, String> rolesInUserDictionary;
     private List<String> foundRoles;
     private Map<String, String> actionInUserDictionary;
@@ -34,12 +35,12 @@ public class FormulateRequirements {
         addRolesToRequirements(foundRoles);
         ArrayList<Map.Entry<String, String>> foundTermsMap = new ArrayList<>();
         for (Map.Entry<String, List<String>> entry : termsMap.entrySet()) {
-            Collection<Map.Entry<String, String>> list = lookForTerms(entry.getKey(), entry.getValue());
-            foundTermsMap.addAll(list);
+            Collection<Map.Entry<String, String>> foundTerms = lookForTerms(entry.getKey(), entry.getValue());
+            foundTermsMap.addAll(foundTerms);
         }
-        Map<String, String> mapFoFoundTerms = foundTermsMap.stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)); //todo change fo to to
-        checkWhatRequirementsIsToPerform(mapFoFoundTerms);
+        Map<String, String> mapToFoundTerms = foundTermsMap.stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        checkWhatRequirementsIsToPerform(mapToFoundTerms);
         return allRequirements;
     }
 
@@ -59,15 +60,18 @@ public class FormulateRequirements {
             findRequirement(entry.getKey(), entry.getValue());
         }
         allRequirements.put("text", finalRequirements);
+        allRequirements.put("ui", UIRequirements);
     }
 
     private void findRequirement(String userWord, String term) {
         switch (term) {
             case "userInput":
                 finalRequirements.add("You need a field to take user input in the view. \n");
+                UIRequirements.add("form");
                 break;
             case "filter":
                 finalRequirements.add("You need an option to filter data. \n");
+                UIRequirements.add("filter");
                 break;
             case "data":
                 finalRequirements.add("Perhaps you will need a data structure to store information.");
@@ -96,6 +100,7 @@ public class FormulateRequirements {
                             .split(",");
                     allRequirements.put("columns", Arrays.asList(tokenizedWord));
                 }
+                UIRequirements.add("table");
                 break;
             default:
                 System.out.println("No requirements were found :( ");

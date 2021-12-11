@@ -433,3 +433,19 @@ label[for="ham-menu"] {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+table, th, td {
+    border: 1px solid black;
+}
+
+.resultList {
+    color: black;
+    font-weight: normal;
+}
+
+.resultListTitle{
+    color: black;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+}

@@ -2,8 +2,6 @@ package com.app.requirements.visualization.text.analyzer;
 
 import com.app.requirements.visualization.text.analyzer.api.DictionaryDivResources;
 import com.app.requirements.visualization.text.analyzer.api.NLPResources;
-import com.azure.ai.textanalytics.TextAnalyticsClient;
-import com.azure.ai.textanalytics.models.CategorizedEntity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 public class AnalyticalUtility {
 
@@ -33,10 +30,9 @@ public class AnalyticalUtility {
 
     public Map<String, List<String>> startAnalysis(Map<String, String> userStoryMap, Map<String, String> userDictionary, String userStoryAll) throws IOException {
         initializeUtility();
-        TextAnalyticsClient client = initializeNER();
         tokenizedUserStoryMap.putAll(userStoryMap);
         userDictionaryEntitiesAnalyst.setUserDictionary(userDictionary);
-        findRoles(userStoryAll, client);
+        findRoles(userStoryAll);
         findMainRoleActions(userStoryAll);
         findKeywordsInUserDictionary();
         findSynonyms();
@@ -56,14 +52,8 @@ public class AnalyticalUtility {
         synonymMap.clear();
     }
 
-    private TextAnalyticsClient initializeNER() {
-        return NLPResources.authenticateClient();
-    }
-
-    private void findRoles(String userStoryMap, TextAnalyticsClient client) {
-        foundRoles = NLPResources.recognizeEntities(client, userStoryMap).stream()
-                .map(CategorizedEntity::getText)
-                .collect(Collectors.toList());
+    private void findRoles(String userStoryMap) throws IOException {
+        foundRoles = NLPResources.recognizeEntities(userStoryMap);
     }
 
     private void findMainRoleActions(String userStory) throws IOException {
