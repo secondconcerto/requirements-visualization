@@ -1,9 +1,6 @@
 package com.app.requirements.visualization.text.analyzer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NavigableMap;
+import java.util.*;
 
 public class UserDictionaryEntitiesAnalyst {
 
@@ -19,7 +16,7 @@ public class UserDictionaryEntitiesAnalyst {
         mapOfActionBenefitWithOptionalDescriptions.clear();
     }
 
-    public Map<String, String> lookForRolesInUserDictionary(List<String> foundRoles) {
+    public Map<String, String> lookForRolesInUserDictionary(Set<String> foundRoles) {
         for (String role : foundRoles) {
             role = role.toLowerCase();
             mapOfRolesWithOptionalDescriptions.put(role, userDictionary.getOrDefault(role, ""));
@@ -37,11 +34,16 @@ public class UserDictionaryEntitiesAnalyst {
 
     private Map<String, String> getOptionalDescriptionMap(NavigableMap<String, String> actionMap, Map<String, String> mapWithOptionalDescription) {
 
-        String action = actionMap.get("action");
-        lookUpInUserMap(mapWithOptionalDescription, action);
+        if(actionMap.containsKey("action")) {
+            String action = actionMap.get("action");
+            lookUpInUserMap(mapWithOptionalDescription, action);
+        }
 
-        String complement = actionMap.get("complement");
-        lookUpInUserMap(mapWithOptionalDescription, complement);
+        if(actionMap.containsKey("complement")) {
+            String complement = actionMap.get("complement");
+            lookUpInUserMap(mapWithOptionalDescription, complement);
+        }
+
         return mapWithOptionalDescription;
     }
 

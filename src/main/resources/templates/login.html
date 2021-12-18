@@ -1,4 +1,74 @@
 <!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Requirements Visualization App</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link href="../static/css/login.css" th:href="@{/css/login.css}" rel="stylesheet"/>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+</head>
+<body class="second-body">
+<div class="sidenav">
+    <div class="login-main-text">
+        <h2>Requirements Visualization App</h2>
+        <h5>Login or register from here to access.</h5>
+    </div>
+    <div class="login-main-text">
+        <h2 class="navbar-brand" href="#" th:href="@{/}"></h2>
+    </div>
+</div>
+<div class="main">
+    <div class="col-md-6 col-sm-12">
+        <div class="login-form">
+            <h1>Login or register</h1>
+            <form th:action="@{/login}" method="post">
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger">Invalid username or
+                        password.
+                    </div>
+                </div>
+
+                <div th:if="${param.logout}">
+                    <div class="alert alert-info">You have been logged out.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username"> Username </label> :
+                    <input type="text" class="form-control" id="username" name="username"
+                           placeholder="Enter Email ID" autofocus="autofocus">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>: <input type="password"
+                                                                   id="password"
+                                                                   name="password"
+                                                                   class="form-control"
+                                                                   placeholder="Enter Password"/>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <input type="submit" name="login-submit" id="login-submit"
+                                   class="form-control" value="Log In"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span>New user? <a id="register-link" href="/" th:href="@{/registration}">Register here</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<!--
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +81,7 @@
 <body>
 
 
-<!-- create navigation bar ( header) -->
+&lt;!&ndash; create navigation bar ( header) &ndash;&gt;
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -36,14 +106,14 @@
             <h1> User Login Page </h1>
             <form th:action="@{/login}" method="post">
 
-                <!-- error message -->
+                &lt;!&ndash; error message &ndash;&gt;
                 <div th:if="${param.error}">
                     <div class="alert alert-danger">Invalid username or
                         password.
                     </div>
                 </div>
 
-                <!-- logout message -->
+                &lt;!&ndash; logout message &ndash;&gt;
                 <div th:if="${param.logout}">
                     <div class="alert alert-info">You have been logged out.</div>
                 </div>
@@ -79,4 +149,4 @@
     </div>
 </div>
 </body>
-</html>
+</html>-->

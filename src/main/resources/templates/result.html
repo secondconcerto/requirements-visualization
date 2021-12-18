@@ -27,43 +27,68 @@
         </div>
     </div>
     <div class="row">
-        <div class="Upload-title" style="margin-top: 50px">
-            <div class="title"> Result:</div>
-            <br>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="Upload-file">
+        <div class="Upload-file w-100 mx-auto">
             <div class="visualization-container">
                 <fieldset class=" align-items-center flex-column start-flex">
-                    <tr th:each="string : ${requirement.stringList}">
-                        <th><span class="resultList" th:text="${string}"></span></th>
+                    <div class="form-card">
+                        <div class="tooltip">Hover over me
+                            <span class="tooltiptext">Tooltip text</span>
+                        </div>
+                        <div class="row">
+                            <ul>
+                                <tr th:each="string : ${requirement.stringList}">
+                                    <li>
+                                        <th><span class="" th:text="${string}"></span></th>
+                                    </li>
+                                </tr>
+                            </ul>
+                        </div>
                         <br>
-                    </tr>
+                        <br>
+                        <div style="color: #ee8548;">
+                            Logical schema:
+                            <hr class="hr">
+                        </div>
+                        <div class="row">
+                            <ul>
+                                <tr th:each="string, iterStat : ${requirement.keyPhrases}"
+                                    th:if="${iterStat.index < iterStat.size-1}">
+                                    <li style="display: inline">
+                                        <th><span class="" th:text="${string + '&nbsp;->&nbsp;'}"></span></th>
+                                    </li>
+                                </tr>
+                                <tr th:each="string, iterStat : ${requirement.keyPhrases}"
+                                    th:if="${iterStat.index >= iterStat.size-1}">
+                                    <li style="display: inline">
+                                        <th><span class="" th:text="${string}"></span></th>
+                                    </li>
+                                </tr>
+                            </ul>
+                        </div>
+                    </div>
                 </fieldset>
             </div>
         </div>
     </div>
     <div class="row">
         <br>
-        <div class="Upload-title">
-            <div class="title" style="margin-top: 20px"> Some graphical data visualization:</div>
+        <div class="Upload-title2">
+            <div class="title2" style="padding-top: 50px"> Some graphical data visualization:</div>
+        </div>
+    </div>
+    <div th:if="${#lists.contains(requirement.UIList, 'filter')}">
+        <div class="col-md-12 col-sm-12" style="padding: 10px;">
+            <div class="input-wrapper">
+                <input style="padding-left: 30px; color: #616161;" id="stuff"
+                       placeholder="Filter records..."
+                       onkeyup="myFunction()">
+                <label for="stuff" class="fa fa-filter input-icon"></label>
+            </div>
         </div>
     </div>
     <div class="row top-buffer">
-        <div class="col-md-12 col-sm-12" style="padding: 10px;">
-            <div th:if="${#lists.contains(requirement.UIList, 'filter')}">
-                <div class="input-wrapper">
-                    <input style="padding-left: 30px; color: #616161;" id="stuff"
-                           placeholder="Filter records..."
-                           onkeyup="myFunction()">
-                    <label for="stuff" class="fa fa-filter input-icon"></label>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-sm-12" style="padding: 10px;">
-            <div th:if="${#lists.contains(requirement.UIList, 'table')}">
+        <div th:if="${#lists.contains(requirement.UIList, 'table')}">
+            <div class="col-md-12 col-sm-12" style="padding: 10px;">
                 <table id="myTable">
                     <tr class="header">
                         <th:block th:each="column : ${requirement.columnList}">
@@ -83,192 +108,209 @@
                 </table>
             </div>
         </div>
-        <div class="col-md-5 col-sm-5" style="padding: 10px;"> <!--style="background-color:lavender;"-->
-            <div class="calendar">
-                <div class="month" style="margin-top: 30px">
-                    <ul>
-                        <li class="prev">&#10094;</li>
-                        <li class="next">&#10095;</li>
-                        <li>Month<br><span style="font-size:18px">2021</span>
-                        </li>
+        <div th:if="${#lists.contains(requirement.UIList, 'date')}">
+            <div class="col-md-7 col-sm-7" style="padding: 10px;"> <!--style="background-color:lavender;"-->
+                <div class="calendar">
+                    <div class="month" style="margin-top: 30px">
+                        <ul>
+                            <li class="prev">&#10094;</li>
+                            <li class="next">&#10095;</li>
+                            <li>Month<br><span style="font-size:18px">2021</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <ul class="weekdays">
+                        <li>Mo</li>
+                        <li>Tu</li>
+                        <li>We</li>
+                        <li>Th</li>
+                        <li>Fr</li>
+                        <li>Sa</li>
+                        <li>Su</li>
+                    </ul>
+
+                    <ul id="nav" class="days">
+                        <li>1</li>
+                        <li>2</li>
+                        <li>3</li>
+                        <li>4</li>
+                        <li>5</li>
+                        <li>6</li>
+                        <li>7</li>
+                        <li>8</li>
+                        <li>9</li>
+                        <li>10</li>
+                        <li>11</li>
+                        <li>12</li>
+                        <li>13</li>
+                        <li>14</li>
+                        <li>15</li>
+                        <li>16</li>
+                        <li>17</li>
+                        <li>18</li>
+                        <li>19</li>
+                        <li>20</li>
+                        <li>21</li>
+                        <li>22</li>
+                        <li>23</li>
+                        <li>24</li>
+                        <li>25</li>
+                        <li>26</li>
+                        <li>27</li>
+                        <li>28</li>
+                        <li>29</li>
+                        <li>30</li>
+                        <li>31</li>
                     </ul>
                 </div>
-
-                <ul class="weekdays">
-                    <li>Mo</li>
-                    <li>Tu</li>
-                    <li>We</li>
-                    <li>Th</li>
-                    <li>Fr</li>
-                    <li>Sa</li>
-                    <li>Su</li>
-                </ul>
-
-                <ul id="nav" class="days">
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li>5</li>
-                    <li>6</li>
-                    <li>7</li>
-                    <li>8</li>
-                    <li>9</li>
-                    <li>10</li>
-                    <li>11</li>
-                    <li>12</li>
-                    <li>13</li>
-                    <li>14</li>
-                    <li>15</li>
-                    <li>16</li>
-                    <li>17</li>
-                    <li>18</li>
-                    <li>19</li>
-                    <li>20</li>
-                    <li>21</li>
-                    <li>22</li>
-                    <li>23</li>
-                    <li>24</li>
-                    <li>25</li>
-                    <li>26</li>
-                    <li>27</li>
-                    <li>28</li>
-                    <li>29</li>
-                    <li>30</li>
-                    <li>31</li>
-                </ul>
             </div>
         </div>
-        <div class="col-md-3 col-sm-3" style="padding: 10px; "> <!--style="background-color:lavenderblush;"-->
-            <form class="userForm">
-                <div class="form-group">
-                    <label for="exampleFormControlInput1">Email address</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1"
-                           placeholder="name@example.com">
-                </div>
-                <div class="form-group">
-                    <label for="exampleFormControlSelect1">Example select</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="exampleFormControlSelect2">Example multiple select</label>
-                    <select multiple class="form-control" id="exampleFormControlSelect2">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Example textarea</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-3 col-sm-3" style="padding: 10px; "> <!--style="background-color:lavender;">-->
-            <ul class="list-unstyled mediaStyle">
-                <li class="media">
-                    <img src="..." class="mr-3" alt="...">
-                    <div class="media-body">
-                        <h5 class="mt-0 mb-1">List-based media object</h5>
-                        Your media object description
-                    </div>
-                </li>
-                <li class="media my-4">
-                    <img src="..." class="mr-3" alt="...">
-                    <div class="media-body">
-                        <h5 class="mt-0 mb-1">List-based media object</h5>
-                        Your media object description
-                    </div>
-                </li>
-                <li class="media">
-                    <img src="..." class="mr-3" alt="...">
-                    <div class="media-body">
-                        <h5 class="mt-0 mb-1">List-based media object</h5>
-                        Your media object description
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="col-md-5 col-sm-5" style="padding: 10px;">
-            <div class="col-4">
-                <div class="list-group2" id="list-tab" role="tablist">
-                    <a class="list-group-item2 list-group-item-action2 active" id="list-home-list" data-toggle="list"
-                       href="#list-home" role="tab" aria-controls="home">Your</a>
-                    <a class="list-group-item2 list-group-item-action2" data-toggle="list" href="#list-profile"
-                       role="tab"
-                       aria-controls="profile">exemplary</a>
-                    <a class="list-group-item2 list-group-item-action2" data-toggle="list" href="#list-messages"
-                       role="tab"
-                       aria-controls="messages">list</a>
-                    <a class="list-group-item2 list-group-item-action2" data-toggle="list" href="#list-settings"
-                       role="tab"
-                       aria-controls="settings">of</a>
-                    <a class="list-group-item2 list-group-item-action2" data-toggle="list" href="#list-settings"
-                       role="tab"
-                       aria-controls="elements">elements</a>
-                </div>
-            </div>
-            <div class="col-8">
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="list-home" role="tabpanel"
-                         aria-labelledby="list-home-list">
-                    </div>
-                    <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
-                    </div>
-                    <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
-
-                    </div>
-                    <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-3" style="padding: 10px;">
-            <div class="contact-clean">
-                <form onsubmit="return false;">
-                    <h2 class="text-center">Contact us</h2>
-                    <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Name">
-                    </div>
-                    <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Email">
-                    </div>
-                    <div class="form-group"><textarea class="form-control" name="message" placeholder="Message"
-                                                      rows="14"></textarea></div>
+        <div th:if="${#lists.contains(requirement.UIList, 'form')}">
+            <div class="col-md-3 col-sm-3" style="padding: 10px; "> <!--style="background-color:lavenderblush;"-->
+                <form class="userForm">
                     <div class="form-group">
-                        <button class="btn btn-primary" type="submit">send</button>
+                        <label for="exampleFormControlInput1">Email address</label>
+                        <input type="email" class="form-control" id="exampleFormControlInput1"
+                               placeholder="name@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Example select</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect2">Example multiple select</label>
+                        <select multiple class="form-control" id="exampleFormControlSelect2">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Example textarea</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="col-md-3 col-sm-3 dropdownStyle" style="padding: 10px;">
-            <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-                    Exemplary
-                    dropdown
-                    <span class="caret"></span></button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Element 1</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Element 2</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Element 3</a></li>
-                    <li role="presentation" class="divider"></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another element</a></li>
+        <div th:if="${#lists.contains(requirement.UIList, 'media')}">
+            <div class="col-md-3 col-sm-3" style="padding: 10px; "> <!--style="background-color:lavender;">-->
+                <ul class="list-unstyled mediaStyle">
+                    <li class="media">
+                        <img src="..." class="mr-3" alt="...">
+                        <div class="media-body">
+                            <h5 class="mt-0 mb-1">List-based media object</h5>
+                            Your media object description
+                        </div>
+                    </li>
+                    <li class="media my-4">
+                        <img src="..." class="mr-3" alt="...">
+                        <div class="media-body">
+                            <h5 class="mt-0 mb-1">List-based media object</h5>
+                            Your media object description
+                        </div>
+                    </li>
+                    <li class="media">
+                        <img src="..." class="mr-3" alt="...">
+                        <div class="media-body">
+                            <h5 class="mt-0 mb-1">List-based media object</h5>
+                            Your media object description
+                        </div>
+                    </li>
                 </ul>
+            </div>
+        </div>
+        <div th:if="${#lists.contains(requirement.UIList, 'list')}">
+            <div class="col-md-5 col-sm-5" style="padding: 10px;">
+                <div class="col-7">
+                    <div class="list-group2" id="list-tab" role="tablist">
+                        <a class="list-group-item2 list-group-item-action2 active" id="list-home-list"
+                           data-toggle="list"
+                           href="#list-home" role="tab" aria-controls="home">Your</a>
+                        <a class="list-group-item2 list-group-item-action2" data-toggle="list" href="#list-profile"
+                           role="tab"
+                           aria-controls="profile">exemplary</a>
+                        <a class="list-group-item2 list-group-item-action2" data-toggle="list" href="#list-messages"
+                           role="tab"
+                           aria-controls="messages">list</a>
+                        <a class="list-group-item2 list-group-item-action2" data-toggle="list" href="#list-settings"
+                           role="tab"
+                           aria-controls="settings">of</a>
+                        <a class="list-group-item2 list-group-item-action2" data-toggle="list" href="#list-settings"
+                           role="tab"
+                           aria-controls="elements">elements</a>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="list-home" role="tabpanel"
+                             aria-labelledby="list-home-list">
+                        </div>
+                        <div class="tab-pane fade" id="list-profile" role="tabpanel"
+                             aria-labelledby="list-profile-list">
+                        </div>
+                        <div class="tab-pane fade" id="list-messages" role="tabpanel"
+                             aria-labelledby="list-messages-list">
+
+                        </div>
+                        <div class="tab-pane fade" id="list-settings" role="tabpanel"
+                             aria-labelledby="list-settings-list">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:if="${#lists.contains(requirement.UIList, 'contact')}">
+            <div class="col-md-3 col-sm-3" style="padding: 10px;">
+                <div class="contact-clean">
+                    <form onsubmit="return false;">
+                        <h2 class="text-center">Contact us</h2>
+                        <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Name">
+                        </div>
+                        <div class="form-group"><input class="form-control" type="email" name="email"
+                                                       placeholder="Email">
+                        </div>
+                        <div class="form-group"><textarea class="form-control" name="message" placeholder="Message"
+                                                          rows="14"></textarea></div>
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit">send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div th:if="${#lists.contains(requirement.UIList, 'elements')}">
+            <div class="col-md-3 col-sm-3 dropdownStyle" style="padding: 10px;">
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                        Exemplary
+                        dropdown
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Element 1</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Element 2</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Element 3</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another element</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
-<!--    <div class="row top-buffer">-->
+    <!--    <div class="row top-buffer">-->
 
 
-<!--    </div>-->
+    <!--    </div>-->
     <div class="last-div bottom-buffer"></div>
 </div>
 

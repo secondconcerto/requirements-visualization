@@ -6,6 +6,7 @@ import com.app.requirements.visualization.text.analyzer.mappers.UserStoryFormMap
 import com.app.requirements.visualization.web.dto.UserStoryFormDto;
 import com.app.requirements.visualization.web.models.Requirements;
 import org.apache.commons.io.FilenameUtils;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -16,10 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+
 
 @Controller
 public class UploadController {
@@ -40,12 +39,12 @@ public class UploadController {
 
     @PostMapping(value = {"/uploadFile"}, consumes = {"multipart/form-data"})
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
+        userDictionary.clear();
         if (validate(file)) {
-            return ResponseEntity.ok("Please select a txt file to upload.");
+            return ResponseEntity.ok("Please select a TXT file to upload.");
         }
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         try {
-            userDictionary.clear();
             userDictionary = fileToMapMapper.mapFile(file);
         } catch (IOException exception) {
             return ResponseEntity.ok("Unfortunately, there was a problem with loading chosen file. Try again with a different file.");
@@ -64,15 +63,23 @@ public class UploadController {
 
     @PostMapping(value = "/uploadStory")
     public ResponseEntity<?> uploadUserStory(@ModelAttribute("story") UserStoryFormDto userStoryFormDto) {
-        userStoryMap = userStoryFormMapper.mapFormToMap(userStoryFormDto);
-        userStoryAll = userStoryFormMapper.mapFormToString(userStoryFormDto);
-        return ResponseEntity.ok("You successfully uploaded your story!");
+        userStoryMap.clear();
+        userStoryAll = "";
+        String errorMessage = analyticalUtility.isStoryCorrect(userStoryFormDto);
+        if(errorMessage.isEmpty()) {
+            userStoryMap = userStoryFormMapper.mapFormToMap(userStoryFormDto);
+            userStoryAll = userStoryFormMapper.mapFormToString(userStoryFormDto);
+            return ResponseEntity.ok("You successfully uploaded your story!");
+        }
+        return ResponseEntity.ok(errorMessage);
     }
 
     @PostMapping(value = "/startVisualize")
     public String startVisualization(RedirectAttributes redirectAttributes) throws IOException {
-        Map<String, List<String>> finalRequirements;
+        Map<String, Set<String>> finalRequirements;
         if (userDictionary.isEmpty() || userStoryMap.isEmpty()) {
+            userDictionary.clear();
+            userStoryMap.clear();
             return FALSE;
         } else {
             finalRequirements = analyticalUtility.startAnalysis(userStoryMap, userDictionary, userStoryAll);
@@ -80,9 +87,13 @@ public class UploadController {
             requirements.setStringList(finalRequirements.get("text"));
             requirements.setColumnList(finalRequirements.get("columns"));
             requirements.setUIList(finalRequirements.get("ui"));
+            requirements.setKeyPhrases(finalRequirements.get("keyPhrases"));
             redirectAttributes.addFlashAttribute("requirement", requirements);
             return "redirect:/result";
         }
 
     }
 }
+
+
+
