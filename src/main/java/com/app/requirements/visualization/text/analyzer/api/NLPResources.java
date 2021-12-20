@@ -187,7 +187,14 @@ public class NLPResources {
             firstIndex = actionToken.indexOf(String.valueOf(allActionActions.toArray()[0]));
             if(firstIndex > -1) {
                 endIndex = firstIndex + allActionActions.toArray()[0].toString().length();
-                String complement = actionToken.substring(endIndex + 1);
+                String complement = "";
+                if(endIndex == actionToken.length() || endIndex == actionToken.length()-1) {
+                    if(firstIndex != 0 || firstIndex != 1)
+                    complement = actionToken.substring(0,firstIndex);
+
+                } else {
+                    complement = actionToken.substring(endIndex + 1);
+                }
                 actions.put("complement", complement);
             }
         }

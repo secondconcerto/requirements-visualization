@@ -25,7 +25,7 @@ public class AnalyticalUtility {
     private Map<String, String> rolesInUserDictionary = new HashMap<>();
     private Map<String, String> actionInUserDictionary = new HashMap<>();
     private Map<String, String> benefitInUserDictionary = new HashMap<>();
-    private Map<String, List<String>> synonymMap = new HashMap<String, List<String>>();
+    private Map<String, List<String>> synonymMap = new HashMap<>();
 
     public Map<String, Set<String>> startAnalysis(Map<String, String> userStoryMap, Map<String, String> userDictionary, String userStoryAsOneSentence) throws IOException {
         initializeUtility();
@@ -115,30 +115,38 @@ public class AnalyticalUtility {
             return "Some fields are missing, please try again...";
         }
 
-        if(!StringUtils.isAlphanumeric(tempPersona) || !StringUtils.isAlphanumeric(tempAction) || !StringUtils.isAlphanumeric(tempBenefit)){
+        if(!StringUtils.isAlpha(tempPersona.replace(" ", "")) ||
+                !StringUtils.isAlpha(tempAction.replace(" ", "")) ||
+                !StringUtils.isAlpha(tempBenefit.replace(" ", ""))){
             return "Text contains some special character which are not allowed. Please try again...";
         }
 
-        if(!StringUtils.isAlpha(tempPersona)) {
+        if(!StringUtils.isAlpha(tempPersona.replace(" ", ""))) {
             if(finalMessage.isEmpty())
-                finalMessage = new StringBuilder().append(finalMessage).append("Too many numbers in the first field").toString();
+                finalMessage = finalMessage + "Too many numbers in the first field";
             else
-                finalMessage = new StringBuilder().append(finalMessage).append("<br/>").append("Too many numbers in the first field").toString();
+                finalMessage = finalMessage + "<br/>" + "Too many numbers in the first field";
         }
-        if(StringUtils.isNumeric(tempAction)) {
+        if(StringUtils.isNumeric(tempAction.replace(" ", ""))) {
             if(finalMessage.isEmpty())
-                finalMessage = new StringBuilder().append(finalMessage).append("Too many numbers in the second field").toString();
+                finalMessage = finalMessage + "Too many numbers in the second field";
             else
-                finalMessage = new StringBuilder().append(finalMessage).append("<br/>").append("Too many numbers in the second field").toString();
+                finalMessage = finalMessage + "<br/>" + "Too many numbers in the second field";
         }
-        if(StringUtils.isNumeric(tempBenefit)) {
+        if(StringUtils.isNumeric(tempBenefit.replace(" ", ""))) {
             if(finalMessage.isEmpty())
-                finalMessage = new StringBuilder().append(finalMessage).append("Too many numbers in the third field").toString();
+                finalMessage = finalMessage + "Too many numbers in the third field";
             else
-                finalMessage = new StringBuilder().append(finalMessage).append("<br/>").append("Too many numbers in the third field").toString();
+                finalMessage = finalMessage + "<br/>" + "Too many numbers in the third field";
         }
 
         return finalMessage;
 
+    }
+
+    public void prepareStory(UserStoryFormDto userStoryFormDto) {
+        userStoryFormDto.setPersona(userStoryFormDto.getPersona().trim());
+        userStoryFormDto.setAction(userStoryFormDto.getAction().trim());
+        userStoryFormDto.setBenefit(userStoryFormDto.getBenefit().trim());
     }
 }

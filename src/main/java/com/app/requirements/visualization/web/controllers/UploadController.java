@@ -25,13 +25,13 @@ public class UploadController {
 
     private static final String FALSE = "redirect:/visualize?false";
 
-    FileToMapMapper fileToMapMapper = new FileToMapMapper();
-    UserStoryFormMapper userStoryFormMapper = new UserStoryFormMapper();
-    AnalyticalUtility analyticalUtility = new AnalyticalUtility();
+    private FileToMapMapper fileToMapMapper = new FileToMapMapper();
+    private UserStoryFormMapper userStoryFormMapper = new UserStoryFormMapper();
+    private AnalyticalUtility analyticalUtility = new AnalyticalUtility();
 
-    Map<String, String> userDictionary = new HashMap<>();
-    Map<String, String> userStoryMap = new HashMap<>();
-    String userStoryAll = "";
+    private Map<String, String> userDictionary = new HashMap<>();
+    private Map<String, String> userStoryMap = new HashMap<>();
+    private String userStoryAll = "";
 
     public UploadController() {
         super();
@@ -67,6 +67,7 @@ public class UploadController {
         userStoryAll = "";
         String errorMessage = analyticalUtility.isStoryCorrect(userStoryFormDto);
         if(errorMessage.isEmpty()) {
+            analyticalUtility.prepareStory(userStoryFormDto);
             userStoryMap = userStoryFormMapper.mapFormToMap(userStoryFormDto);
             userStoryAll = userStoryFormMapper.mapFormToString(userStoryFormDto);
             return ResponseEntity.ok("You successfully uploaded your story!");
@@ -82,13 +83,21 @@ public class UploadController {
             userStoryMap.clear();
             return FALSE;
         } else {
-            finalRequirements = analyticalUtility.startAnalysis(userStoryMap, userDictionary, userStoryAll);
-            Requirements requirements = new Requirements();
-            requirements.setStringList(finalRequirements.get("text"));
-            requirements.setColumnList(finalRequirements.get("columns"));
-            requirements.setUIList(finalRequirements.get("ui"));
-            requirements.setKeyPhrases(finalRequirements.get("keyPhrases"));
-            redirectAttributes.addFlashAttribute("requirement", requirements);
+            try {
+                finalRequirements = analyticalUtility.startAnalysis(userStoryMap, userDictionary, userStoryAll);
+                Requirements requirements = new Requirements();
+                requirements.setStringList(finalRequirements.get("text"));
+                requirements.setColumnList(finalRequirements.get("columns"));
+                requirements.setUIList(finalRequirements.get("ui"));
+                requirements.setKeyPhrases(finalRequirements.get("keyPhrases"));
+                if(requirements.getStringList().isEmpty() && requirements.getColumnList().isEmpty()
+                        && requirements.getKeyPhrases().isEmpty() && requirements.getUIList().isEmpty()) {
+                    requirements.setStringList(new HashSet<>(Collections.singletonList("No requirements were found :( ")));
+                }
+                redirectAttributes.addFlashAttribute("requirement", requirements);
+            } catch (Exception e){
+                e.toString();
+            }
             return "redirect:/result";
         }
 

@@ -1,6 +1,7 @@
 package com.app.requirements.visualization.text.analyzer;
 
 import com.app.requirements.visualization.text.analyzer.entity.AppDictionary;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,15 +30,15 @@ public class FormulateRequirements {
 
     public Map<String, Set<String>> findTermsInAppDictionary(Map<String, List<String>> synonymsMap) {
         addRolesToRequirements(foundRoles);
-        ArrayList<Map.Entry<String, String>> foundTermsFromProjectDictionary = new ArrayList<>();
+        ArrayList<Map.Entry<String, List<String>>> foundTermsFromProjectDictionary = new ArrayList<>();
         for (Map.Entry<String, List<String>> synonym : synonymsMap.entrySet()) {
-            Collection<Map.Entry<String, String>> foundTerms = lookForTermsInProjectDictionary(synonym.getKey(), synonym.getValue());
+            Collection<Map.Entry<String, List<String>>> foundTerms = lookForTermsInProjectDictionary(synonym.getKey(), synonym.getValue());
             foundTermsFromProjectDictionary.addAll(foundTerms);
         }
-        Map<String, String> mapToFoundTerms = foundTermsFromProjectDictionary.stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        List<List<String>> mapToFoundTerms = foundTermsFromProjectDictionary.stream()
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
         checkWhatRequirementsIsToPerform(mapToFoundTerms);
-
         return allRequirements;
     }
 
@@ -52,20 +53,42 @@ public class FormulateRequirements {
                 .collect(Collectors.toList());
     }
 
-    private void checkWhatRequirementsIsToPerform(Map<String, String> foundTermsMap) {
-        for (Map.Entry<String, String> entry : foundTermsMap.entrySet()) {
-            findRequirement(entry.getValue());
+    private void checkWhatRequirementsIsToPerform(List<List<String>> foundTermsMap) {
+        List<String> foundTermsInAppDictionary = convertListOfListsIntoOne(foundTermsMap);
+        for (String entry : foundTermsInAppDictionary) {
+            findRequirement(entry);
         }
         allRequirements.put("text", finalRequirements);
         allRequirements.put("ui", UIRequirements);
         allRequirements.put("keyPhrases", foundKeyPhrases);
     }
 
+    @NotNull
+    private List<String> convertListOfListsIntoOne(List<List<String>> foundTermsMap) {
+        List<String> foundTermsInAppDictionaryRaw = foundTermsMap.stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
+        List<String> foundTermsInAppDictionary = removeDuplicatesFromList(foundTermsInAppDictionaryRaw);
+        return foundTermsInAppDictionary;
+    }
+
+    @NotNull
+    private List<String> removeDuplicatesFromList(List<String> foundTermsFromProjectDictionary) {
+        if(!foundTermsFromProjectDictionary.isEmpty()) {
+            return foundTermsFromProjectDictionary.stream().distinct().collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
     private void findRequirement(String term) {
         switch (term) {
+            case "contact":
+                finalRequirements.add("If users are to stay in touch, it's a good idea to add a contact form.\n");
+                UIRequirements.add("contact");
+                break;
             case "form":
-            case "input":
-                finalRequirements.add("You need a field to take user input in the view. It may be simple area of more complex form \n");
+                finalRequirements.add("It is worth thinking about a form through which it will be possible to get in touch. " +
+                        "You need a field to take user input in the view. It may be simple area of more complex form.\n");
                 UIRequirements.add("form");
                 break;
             case "filter":
@@ -77,16 +100,22 @@ public class FormulateRequirements {
                 UIRequirements.add("input");
                 break;
             case "data":
-                finalRequirements.add("Perhaps you will need a data structure to store information.");
+                finalRequirements.add("Perhaps you will need a data structure to store information. \n");
                 prepareColumnInDataTable(term);
                 UIRequirements.add("table");
                 break;
             case "date":
-                finalRequirements.add("You must have structure to keep important dates.");
+                finalRequirements.add("You must have structure to keep important dates. \n");
                 UIRequirements.add("date");
                 break;
-            default:
-                System.out.println("No requirements were found :( ");
+            case "problem":
+                finalRequirements.add("You must a panel that will allow to communicate any error or problem, so it can be solved by someone. \n");
+                UIRequirements.add("problem");
+                break;
+            case "profile":
+                finalRequirements.add("Participants (members) will need their profiles. \n");
+                UIRequirements.add("profile");
+                break;
         }
     }
 
