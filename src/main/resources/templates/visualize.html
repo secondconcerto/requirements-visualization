@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+<html xmlns:th="http://thymeleaf.org"
 >
 <head>
     <meta charset="utf-8">
@@ -8,81 +8,153 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
           crossorigin="anonymous">
-    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
-    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/5.11.2/css/all.css} "/>
+    <link href="../static/css/visualization.css" th:href="@{/css/visualization.css}" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
 
 
 </head>
 <body>
-<input type="checkbox" id="ham-menu">
-<label for="ham-menu">
-    <div class="hide-des">
-        <span class="menu-line"></span>
-        <span class="menu-line"></span>
-        <span class="menu-line"></span>
-        <span class="menu-line"></span>
-        <span class="menu-line"></span>
-        <span class="menu-line"></span>
-    </div>
-
-</label>
-<div class="full-page-green"></div>
-<div class="ham-menu">
-    <ul class="centre-text bold-text">
-        <li><a href="#" th:href="@{/}">Home</a></li>
-        <li><a th:href="@{/visualize}">Start visualization</a></li>
-        <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
-    </ul>
+<div th:replace="fragments/menu :: menu">
 </div>
 
 <div class="container">
-    <div class="Header align-self-center"> Let's start visualization</div>
-    <div class="Upload-title">
-        <div class="title"> 1. Upload your dictionary</div>
-    </div>
-    <div class="Upload-file">
-            <input id="file" type="file" name="file" style="display:none; "/>
-        <input class="upload-button" type="button" value="Choose Files!"
-               onclick="document.getElementById('file').click();"/>
-        <button onclick="uploadFile()" class="upload-button">Upload File</button>
-    </div>
-    <div class="upload-message">
-        <div class="file-message">
-            <p id='msg'></p>
+    <div class="row">
+        <div class="jumbotron">
+            <h1 class="blue">Let's start visualization</h1>
+            <h3 class="blue">It's just a few simple steps</h3>
         </div>
     </div>
-    <div class="upload-title-2">
-        <div class="title">2. Enter user story
+    <div class="row">
+        <div class="visualization-container">
+            <div th:if="${param.false}">
+                <div class="alert alert-danger">You must upload dictionary and story before starting the visualization</div>
+            </div>
+            <!-- progressbar -->
+            <ul id="progressbar">
+                <li class="active" id="account"><strong>File</strong></li>
+                <li id="personal"><strong>Story</strong></li>
+            </ul> <!-- fieldsets -->
+            <hr class="hr">
+            <fieldset class=" align-items-center flex-column start-flex">
+                <div class="form-card">
+                    <div class="row">
+                        <h2> 1. Upload your dictionary</h2>
+                    </div>
+                    <div class="row d-flex">
+                        <div class="col col-2 d-flex justify-content-center">
+                            <input id="file" type="file" name="file" style="display:none; "/>
+                            <button class="btn btn-success"
+                                    onclick="document.getElementById('file').click();">
+                                Choose File!
+                            </button>
+                        </div>
+                        <div class="col col-2 d-flex justify-content-center">
+                            <button onclick="uploadFile()" class="btn btn-success">Upload File</button>
+                        </div>
+                        <div class="col col-8 d-flex text-end" style="justify-content: left">
+                            <span id="msg" class="h4"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex w-50 justify-content-center">
+                <button name="next" class="next btn btn-success w-25">Next</button>
+                </div>
+            </fieldset>
+            <fieldset class=" align-items-center flex-column">
+                <div class="form-card">
+                    <div class="row">
+                        <h2> 2. Enter user story</h2>
+                    </div>
+                    <div class="row d-flex justify-content-center flex-column">
+                        <form id="myForm" class="d-flex flex-column" th:object="${story}">
+                            <div class="form-group">
+                                <label class="control-label" for="persona"> As a : </label>
+                                <input id="persona" class="form-control" th:field="*{persona}"
+                                       required autofocus="autofocus"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="action"> I want to : </label>
+                                <input id="action" class="form-control" th:field="*{action}"
+                                       required autofocus="autofocus"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="benefit"> So that : </label>
+                                <textarea id="benefit" class="form-control" th:field="*{benefit}"
+                                          required autofocus="autofocus"></textarea>
+                            </div>
+                            <div class="row d-flex">
+                                <div class="col col-2 d-flex justify-content-center">
+                                    <!--<button id="userForm" class="btn btn-success">Submit</button>-->
+                                    <input id="userForm" type="button" value="Submit" class="btn btn-success button">
+                                </div>
+                                <div class="col col-10 d-flex text-end">
+                                    <span id="msg2" class="h4"></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="d-flex w-50 justify-content-center">
+                    <button name="previous" class="w-25 mr-1 previous btn btn-success">Previous</button>
+                    <form class="w-25 ml-1" action="#" th:action="@{/startVisualize}" th:method="post">
+                        <button type="submit" class=" btn btn-success">Start visualization</button>
+                    </form>
+                </div>
+            </fieldset>
         </div>
     </div>
+    <!--    <div class="container visualization-container">-->
+    <!--        <div class="Header align-self-center"></div>-->
+    <!--        <div class="Upload-title">-->
+    <!--            <div class="title"> 1. Upload your dictionary</div>-->
+    <!--        </div>-->
+    <!--        <div class="Upload-file">-->
+    <!--            <input id="file" type="file" name="file" style="display:none; "/>-->
+    <!--            <input class="upload-button" type="button" value="Choose Files!"-->
+    <!--                   onclick="document.getElementById('file').click();"/>-->
+    <!--            <button onclick="uploadFile()" class="upload-button">Upload File</button>-->
+    <!--        </div>-->
+    <!--        <div class="upload-message">-->
+    <!--            <div class="file-message">-->
+    <!--                <p id='msg'></p>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="upload-title-2">-->
+    <!--            <div class="title">2. Enter user story-->
+    <!--            </div>-->
+    <!--        </div>-->
 
-    <div class="enter-story">
-        <!-- th:action="@{/uploadStory}" method="post" th:object="${story}"-->
-        <form id="myForm" th:object="${story}">
-            <div class="form-group">
-                <label class="control-label" for="persona"> As a : </label>
-                <input id="persona" class="form-control" th:field="*{persona}"
-                       required autofocus="autofocus"/>
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="action"> I want to : </label>
-                <input id="action" class="form-control" th:field="*{action}"
-                       required autofocus="autofocus"/>
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="benefit"> So that : </label>
-                <textarea id="benefit" class="form-control" th:field="*{benefit}"
-                          required autofocus="autofocus"></textarea>
-            </div>
-            <input id="userForm" type="button" value="Submit" class="upload-button">
-        </form>
-    </div>
-    <div class="button-start">
-        <form action="#" th:action="@{/startVisualize}" th:method="post">
-            <button type="submit" class="upload-button">Start visualization</button>
-        </form>
-    </div>
+    <!--        <div class="enter-story">-->
+    <!--            &lt;!&ndash; th:action="@{/uploadStory}" method="post" th:object="${story}"&ndash;&gt;-->
+    <!--            <form id="myForm" th:object="${story}">-->
+    <!--                <div class="form-group">-->
+    <!--                    <label class="control-label" for="persona"> As a : </label>-->
+    <!--                    <input id="persona" class="form-control" th:field="*{persona}"-->
+    <!--                           required autofocus="autofocus"/>-->
+    <!--                </div>-->
+    <!--                <div class="form-group">-->
+    <!--                    <label class="control-label" for="action"> I want to : </label>-->
+    <!--                    <input id="action" class="form-control" th:field="*{action}"-->
+    <!--                           required autofocus="autofocus"/>-->
+    <!--                </div>-->
+    <!--                <div class="form-group">-->
+    <!--                    <label class="control-label" for="benefit"> So that : </label>-->
+    <!--                    <textarea id="benefit" class="form-control" th:field="*{benefit}"-->
+    <!--                              required autofocus="autofocus"></textarea>-->
+    <!--                </div>-->
+    <!--                <input id="userForm" type="button" value="Submit" class="upload-button">-->
+    <!--            </form>-->
+    <!--        </div>-->
+    <!--        <div class="button-start">-->
+    <!--            <form action="#" th:action="@{/startVisualize}" th:method="post">-->
+    <!--                <button type="submit" class="upload-button">Start visualization</button>-->
+    <!--            </form>-->
+    <!--        </div>-->
+    <!--    </div>-->
+</div>
 </div>
 </body>
 </html>
@@ -117,9 +189,75 @@
             method: "POST",
             url: "/uploadStory",
             data: $('#myForm').serialize(),
-            success: function () {
-                console.log('yess')
+            success: function (data) {
+                $('#msg2').html(data).fadeIn('slow');
             }
         });
     };
+</script>
+<script>
+    $(document).ready(function () {
+
+        var current_fs, next_fs, previous_fs; //fieldsets
+        var opacity;
+
+        $(".next").click(function () {
+
+            current_fs = $(this).parent().parent();
+            next_fs = $(this).parent().parent().next();
+
+//Add Class Active
+            $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+//show the next fieldset
+            next_fs.show();
+//hide the current fieldset with style
+            current_fs.animate({opacity: 0}, {
+                step: function (now) {
+// for making fielset appear animation
+                    opacity = 1 - now;
+
+                    current_fs.css({
+                        'display': 'none',
+                        'position': 'relative'
+                    });
+                    next_fs.css({'opacity': opacity,'display': 'flex'});
+                },
+                duration: 600
+            });
+        });
+
+        $(".previous").click(function () {
+
+            current_fs = $(this).parent().parent();
+            previous_fs = $(this).parent().parent().prev();
+
+//Remove class active
+            $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+//show the previous fieldset
+            previous_fs.show();
+
+//hide the current fieldset with style
+            current_fs.animate({opacity: 0}, {
+                step: function (now) {
+// for making fielset appear animation
+                    opacity = 1 - now;
+
+                    current_fs.css({
+                        'display': 'none',
+                        'position': 'relative'
+                    });
+                    previous_fs.css({'opacity': opacity, 'display': 'flex'});
+                },
+                duration: 600
+            });
+        });
+
+
+        $(".submit").click(function () {
+            return false;
+        })
+
+    });
 </script>

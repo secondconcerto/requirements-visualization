@@ -1,28 +1,46 @@
 package com.app.requirements.visualization.web.models;
 
 import java.util.List;
+import java.util.Set;
 
 public class Requirements {
 
-    public List<String> stringList;
-    public List<String> columnList;
+    public Set<String> stringList;
+    public Set<String> columnList;
+    public Set<String> keyPhrases;
+    public Set<String> UIList;
 
-    public List<String> getColumnList() {
+    public Set<String> getColumnList() {
         return columnList;
     }
 
-    public void setColumnList(List<String> columnList) {
+    public void setColumnList(Set<String> columnList) {
         this.columnList = columnList;
     }
 
-    public List<String> getStringList() {
+    public Set<String> getStringList() {
         return stringList;
     }
 
-    public void setStringList(List<String> requirements) {
+    public void setStringList(Set<String> requirements) {
         this.stringList = requirements;
     }
 
+    public Set<String> getUIList() {
+        return UIList;
+    }
+
+    public void setUIList(Set<String> UIList) {
+        this.UIList = UIList;
+    }
+
+    public Set<String> getKeyPhrases() {
+        return keyPhrases;
+    }
+
+    public void setKeyPhrases(Set<String> keyPhrases) {
+        this.keyPhrases = keyPhrases;
+    }
   /*  public static boolean isValidPoem(Requirements requirements) {
         return requirements != null && !Collections.emptyList(requirements.getRequirements());
     }*/

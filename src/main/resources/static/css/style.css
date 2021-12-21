@@ -68,6 +68,8 @@ label[for="ham-menu"] {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-weight: normal;
+    font-family: sans-serif;
 }
 
 .ham-menu > ul {
@@ -79,6 +81,14 @@ label[for="ham-menu"] {
 }
 
 .ham-menu > ul > li {
+    font-size: 5rem;
+    white-space: nowrap;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    color: rgb(97, 97, 97);
+}
+
+.ham-menu > ul > li > a {
     font-size: 5rem;
     white-space: nowrap;
     letter-spacing: 0.15em;
@@ -270,6 +280,7 @@ a::after {
 
 .Upload-file {
     grid-area: Upload-file;
+
 }
 
 .upload-button {
@@ -313,7 +324,7 @@ html, body, .container {
     height: 100vh;
     margin: auto;
     text-align: center;
-    color: var(--text-color);
+/*    color: var(--text-color);*/
     font-weight: bold;
     font-family: Arial;
     background-color: var(--home-bg-color);
@@ -327,4 +338,22 @@ html, body, .container {
 
 table, th, td {
     border: 1px solid black;
+}
+
+.jumbotron {
+    background-color: #ffffff;
+    border: 1px solid #AAA;
+    border-bottom: 3px solid #BBB;
+    padding: 0px;
+    margin-top: 1em;
+    overflow: hidden;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+}
+
+.blue h1, h2, h3 {
+    color: #ee8548;;
+    margin-bottom: 20px;
 }

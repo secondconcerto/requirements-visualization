@@ -1,79 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
 <html xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Registration</title>
+    <meta charset="utf-8">
+    <title>Requirements Visualization App</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link href="../static/css/registration.css" th:href="@{/css/registration.css}" rel="stylesheet"/>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-          crossorigin="anonymous">
 </head>
-<body>
-
-<!-- create navigation bar ( header) -->
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed"
-                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                    aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span> <span
-                    class="icon-bar"></span> <span class="icon-bar"></span> <span
-                    class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#" th:href="@{/}">Registration and
-                Login Module</a>
-        </div>
+<body class="second-body">
+<div class="sidenav">
+    <div class="login-main-text">
+        <h2>Requirements Visualization App</h2>
+        <h3>Register from here to access.</h3>
     </div>
-</nav>
-
-<br>
-<br>
-<!-- Create HTML registration form -->
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-
-            <!-- success message -->
+    <div class="login-main-text">
+        <h2 class="navbar-brand" href="#" th:href="@{/}"></h2>
+    </div>
+</div>
+<div class="main">
+    <div class="col-md-6 col-sm-12">
+        <div class="login-form">
             <div th:if="${param.success}">
-                <div class="alert alert-info">You've successfully registered
-                    to our awesome app!</div>
+                <div class="alert alert-info">You've successfully registered to the app!</div>
             </div>
-
-            <h1>Registration</h1>
-
+            <h1>Register your free account</h1>
             <form th:action="@{/registration}" method="post" th:object="${user}">
                 <div class="form-group">
                     <label class="control-label" for="firstName"> First Name </label>
                     <input id="firstName" class="form-control" th:field="*{firstName}"
-                           required autofocus="autofocus" />
+                           required autofocus="autofocus"/>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="lastName"> Last Name </label> <input
                         id="lastName" class="form-control" th:field="*{lastName}"
-                        required autofocus="autofocus" />
+                        required autofocus="autofocus"/>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="email"> Email </label> <input
                         id="email" class="form-control" th:field="*{email}" required
-                        autofocus="autofocus" />
+                        autofocus="autofocus"/>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="password"> Password </label> <input
                         id="password" class="form-control" type="password"
-                        th:field="*{password}" required autofocus="autofocus" />
+                        th:field="*{password}" required autofocus="autofocus"/>
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success">Register</button>
-                    <span>Already registered? <a href="/" th:href="@{/login}">Login
-        here</a></span>
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <button id="login-submit" type="submit" class="btn">Register</button>
+                        </div>
+                    </div>
                 </div>
+                <span>Already registered? <a id="register-link" href="/" th:href="@{/login}">Login
+        here</a></span>
             </form>
         </div>
     </div>
