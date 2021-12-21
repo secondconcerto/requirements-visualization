@@ -85,7 +85,7 @@ html, body {
 }
 
 .visualization-container fieldset .form-card {
-    background: white;
+    background: rgb(55, 70, 57);
     border: 0 none;
     border-radius: 0px;
     box-shadow: 0px 2px 6px 4px rgba(0, 0, 0, 0.2);
@@ -453,7 +453,7 @@ table, th, td {
     justify-content: center;
     font-weight: bold;
 }
-.input-icon{
+.icons{
     position: absolute;
     color: #616161;
     left: 3px;
@@ -608,14 +608,14 @@ body {font-family: Verdana, sans-serif;}
 }
 .last-div{}
 .userForm{
-    border: 1px solid #AAA;
+    border: 1px solid rgb(46, 43, 82);
     padding: 1.5rem;
     margin-right: 0;
     margin-left: 0;
     border-width: .2rem;
 }
 .mediaStyle{
-    border: 1px dotted #AAA;
+    border: 1px dotted rgb(46, 43, 82);
     padding: 1.5rem;
     margin-right: 0;
     margin-left: 0;
@@ -650,40 +650,20 @@ body {font-family: Verdana, sans-serif;}
 }
 
 .dropdownStyle {
-    border: 1px solid rgba(0, 0, 0, 0.125);
+    border: 1px solid rgb(46, 43, 82);
 }
 
 .Upload-file {
     padding-bottom: 20px;
 }
-
-.tooltip {
-    /*position: relative;*/
-    display: inline-block;
-    border-bottom: 1px dotted black;
-}
-
-.tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-}
-
-.tooltip:hover .tooltiptext {
-    visibility: visible;
-}
-
 .avatar {
     vertical-align: middle;
     width: 100px;
     height: 100px;
     border-radius: 50%;
+}
+.title2{
+   padding-top: 50px;
+    align-content: center;
+    justify-content: center;
 }

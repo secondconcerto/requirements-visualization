@@ -119,7 +119,7 @@ public class NLPResources {
     }
 
     private Boolean checkIfVerb(Map.Entry<String, String> entry) {
-        return entry.getValue().equals("MD") || entry.getValue().equals("VBP") || entry.getValue().equals("VB");
+        return entry.getValue().equals("MD") || entry.getValue().equals("VBP") || entry.getValue().equals("VB") || entry.getValue().equals("VBZ");
     }
 
     public void findPersonaActionsInTokens(List<String> foundActions, Map<String, String> tokenizedUserStoryMap) {

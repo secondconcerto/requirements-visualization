@@ -18,6 +18,7 @@ public class FormulateRequirements {
     private Map<String, String> actionInUserDictionary;
     private Map<String, String> benefitInUserDictionary;
     private Map<String, Set<String>> allRequirements = new HashMap<>();
+    private Map<String, List<String>> foundSynonymsMap = new HashMap<>();
 
     public FormulateRequirements(Map<String, String> rolesInUserDictionary, Set<String> foundRoles,
                                  Map<String, String> actionInUserDictionary, Map<String, String> benefitInUserDictionary, Set<String> foundKeyPhrases) {
@@ -33,7 +34,10 @@ public class FormulateRequirements {
         ArrayList<Map.Entry<String, List<String>>> foundTermsFromProjectDictionary = new ArrayList<>();
         for (Map.Entry<String, List<String>> synonym : synonymsMap.entrySet()) {
             Collection<Map.Entry<String, List<String>>> foundTerms = lookForTermsInProjectDictionary(synonym.getKey(), synonym.getValue());
-            foundTermsFromProjectDictionary.addAll(foundTerms);
+            if(!foundTerms.isEmpty()) {
+                foundTermsFromProjectDictionary.addAll(foundTerms);
+                foundSynonymsMap.put(synonym.getKey(), synonym.getValue());
+            }
         }
         List<List<String>> mapToFoundTerms = foundTermsFromProjectDictionary.stream()
                 .map(Map.Entry::getValue)
@@ -101,7 +105,7 @@ public class FormulateRequirements {
                 break;
             case "data":
                 finalRequirements.add("Perhaps you will need a data structure to store information. \n");
-                prepareColumnInDataTable(term);
+                prepareColumnInDataTable();
                 UIRequirements.add("table");
                 break;
             case "date":
@@ -116,10 +120,14 @@ public class FormulateRequirements {
                 finalRequirements.add("Participants (members) will need their profiles. \n");
                 UIRequirements.add("profile");
                 break;
+            case "update":
+                finalRequirements.add("Remember about function to refresh or update your data. \n");
+                UIRequirements.add("update");
+                break;
         }
     }
 
-    private void prepareColumnInDataTable(String term) {
+    private void prepareColumnInDataTable() {
         if (actionInUserDictionary.containsValue("data")) {
             String valueByKey = getValueByKey("data", actionInUserDictionary);
             finalRequirements.add("You will need such columns: " + valueByKey);
@@ -132,21 +140,7 @@ public class FormulateRequirements {
             String[] tokenizedWord = valueByKey
                     .split(",");
             allRequirements.put("columns", new HashSet<>(Arrays.asList(tokenizedWord)));
-
-        } else if (actionInUserDictionary.containsValue(term)) {
-            String valueByKey = getValueByKey(term, actionInUserDictionary);
-            finalRequirements.add("You will need such columns: " + valueByKey);
-            String[] tokenizedWord = valueByKey
-                    .split(",");
-            allRequirements.put("columns", new HashSet<>(Arrays.asList(tokenizedWord)));
-        } else if (benefitInUserDictionary.containsValue(term)) {
-            String valueByKey = getValueByKey(term, benefitInUserDictionary);
-            finalRequirements.add("You will need such columns: " + valueByKey);
-            String[] tokenizedWord = valueByKey
-                    .split(",");
-            allRequirements.put("columns", new HashSet<>(Arrays.asList(tokenizedWord)));
-
-        } else if (actionInUserDictionary.containsValue("columns")) {
+        }  else if (actionInUserDictionary.containsValue("columns")) {
             String valueByKey = getValueByKey("columns", actionInUserDictionary);
             finalRequirements.add("You will need such columns: " + valueByKey);
             String[] tokenizedWord = valueByKey
@@ -158,7 +152,31 @@ public class FormulateRequirements {
             String[] tokenizedWord = valueByKey
                     .split(",");
             allRequirements.put("columns", new HashSet<>(Arrays.asList(tokenizedWord)));
+        } else if (!checkIfSynonymExists("data").isEmpty()) {
+            getTermFromSynonym(actionInUserDictionary);
+            getTermFromSynonym(benefitInUserDictionary);
+        } if (!allRequirements.containsKey("columns")) {
+            String[] tokenizedWord = {"column 1", "column 2", "column 3"};
+            allRequirements.put("columns", new HashSet<>(Arrays.asList(tokenizedWord)));
         }
+    }
+
+    private void getTermFromSynonym(Map<String, String> userDictionaryMap) {
+        String termToLook = checkIfSynonymExists("data").get(0);
+        String valueByKey = getValueByKey(termToLook, userDictionaryMap);
+        if(!valueByKey.isEmpty()) {
+            finalRequirements.add("You will need such columns: " + valueByKey);
+            String[] tokenizedWord = valueByKey
+                    .split(",");
+            allRequirements.put("columns", new HashSet<>(Arrays.asList(tokenizedWord)));
+        }
+    }
+
+    private List<String> checkIfSynonymExists(String data) {
+        return foundSynonymsMap.entrySet().stream()
+                .filter(entry -> entry.getValue().contains(data))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 
     private String getValueByKey(String value, Map<String, String> map) {

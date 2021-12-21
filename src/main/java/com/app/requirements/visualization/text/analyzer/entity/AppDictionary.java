@@ -32,6 +32,9 @@ public class AppDictionary {
         appTerms.put("profiles", Arrays.asList("profile"));
         appTerms.put("support", Arrays.asList("problem", "contact"));
         appTerms.put("helpdesk", Arrays.asList("problem", "contact"));
+        appTerms.put("refresh", Arrays.asList("update"));
+        appTerms.put("update", Arrays.asList("update"));
+        appTerms.put("reload", Arrays.asList("update"));
     }
 
     public HashMap<String, List<String>> getAppTerms() {
