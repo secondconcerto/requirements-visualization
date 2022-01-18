@@ -16,8 +16,12 @@ public class AppDictionary {
         appTerms.put("forms", Arrays.asList("form"));
         appTerms.put("contact", Arrays.asList("contact"));
         appTerms.put("contacts", Arrays.asList("contact"));
+        appTerms.put("comment", Arrays.asList("comment"));
+        appTerms.put("comments", Arrays.asList("comment"));
         appTerms.put("email", Arrays.asList("contact"));
         appTerms.put("emails", Arrays.asList("contact"));
+        appTerms.put("friend", Arrays.asList("friend"));
+        appTerms.put("friends", Arrays.asList("friend"));
         appTerms.put("filter", Arrays.asList("filter"));
         appTerms.put("data", Arrays.asList("data"));
         appTerms.put("date", Arrays.asList("date"));
@@ -30,6 +34,7 @@ public class AppDictionary {
         appTerms.put("problems", Arrays.asList("problem"));
         appTerms.put("profile", Arrays.asList("profile"));
         appTerms.put("profiles", Arrays.asList("profile"));
+        appTerms.put("share", Arrays.asList("share"));
         appTerms.put("support", Arrays.asList("problem", "contact"));
         appTerms.put("helpdesk", Arrays.asList("problem", "contact"));
         appTerms.put("refresh", Arrays.asList("update"));

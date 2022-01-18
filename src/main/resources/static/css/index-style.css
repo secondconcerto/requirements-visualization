@@ -294,3 +294,7 @@ p {
     left: 145px;
 }
 
+.special-card {
+    background-color: rgba(245, 245, 245, 1);
+    opacity: .4;
+}

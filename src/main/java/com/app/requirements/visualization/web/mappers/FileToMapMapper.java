@@ -1,4 +1,4 @@
-package com.app.requirements.visualization.text.analyzer.mappers;
+package com.app.requirements.visualization.web.mappers;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +18,7 @@ public class FileToMapMapper {
                 .lines()
                 .map(String::toLowerCase)
                 .collect(Collectors.toMap(k -> k.split(":")[0], v -> v.split(":")[1]));
+        inputStream.close();
         return map;
     }
 }

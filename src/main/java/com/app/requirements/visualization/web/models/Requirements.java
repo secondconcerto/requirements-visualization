@@ -41,7 +41,4 @@ public class Requirements {
     public void setKeyPhrases(Set<String> keyPhrases) {
         this.keyPhrases = keyPhrases;
     }
-  /*  public static boolean isValidPoem(Requirements requirements) {
-        return requirements != null && !Collections.emptyList(requirements.getRequirements());
-    }*/
 }

@@ -6,7 +6,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 
 @ControllerAdvice
-public class ExceptionHelper extends ResponseEntityExceptionHandler {
+public class ExceptionHelper extends FileUploadError {
 
     @ExceptionHandler(value = Throwable.class)
     public String databaseConnectionFailsException() {

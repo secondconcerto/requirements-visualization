@@ -1,4 +1,4 @@
-package com.app.requirements.visualization.text.analyzer.mappers;
+package com.app.requirements.visualization.web.mappers;
 
 import com.app.requirements.visualization.web.dto.UserStoryFormDto;
 

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="utf-8">
+    <title>Requirements Visualization App</title>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link href="../static/css/visualization.css" th:href="@{/css/visualization.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="fragments/menu :: menu">
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="jumbotron">
+            <h1 class="blue" style="color: lightcoral">Let's start visualization</h1>
+            <h3 class="blue" style="color: lightcoral">Rules</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="visualization-container">
+            <fieldset class=" align-items-center flex-column start-flex">
+                <div class="form-card">
+                    <div class="row">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <h4 class="card-title rule-card" style="color: lightcoral">There are a few rules to follow when creating and entering a user story.</h4>
+                                <ol>
+                                <li class="card-text rule-card">The user dictionary should be written in the following format: 'story word: explanation'. It is a single term. Subsequent terms should start with new lines.</li>
+                                <li class="card-text rule-card">Remember not to enter any numbers numerically. Use full words, e.g.: instead of '4' write 'four'.</li>
+                                <li class="card-text rule-card">Please do not use phrasal verbs.</li>
+                                <li class="card-text rule-card">Please do not use phrasal verbs, and as few modal verbs as possible.</li>
+                                <li class="card-text rule-card">Do not use any special characters except letters. The story is structured in such a way that their use is not necessary.</li>
+                                <li class="card-text rule-card">No part of history can remain empty.</li>
+                                <li class="card-text rule-card">Stick to the rule that sentence structure in each part should look like this: (person ->) action -> complement.</li>
+                                <li class="card-text rule-card">Try not to use complex expressions in different parts of the story.</li>
+                                </ol>
+                                <br>
+                                <h4 class="card-title rule-card" style="color: lightcoral">I understand, <a class="card-title rule-card" style="color: #e52a8d" href="/visualize" th:href="@{/visualize}">take me to visualization.</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+</body>

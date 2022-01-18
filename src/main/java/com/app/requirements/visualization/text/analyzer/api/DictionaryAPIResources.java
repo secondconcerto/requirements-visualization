@@ -9,19 +9,36 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-public class DictionaryDivResources {
+public class DictionaryAPIResources {
 
-    private final String dictionaryDivURL = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+    private final String dictionaryURL = "https://api.dictionaryapi.dev/api/v2/entries/en/";
 
     public List<String> performRequest(String wordToSearch) throws IOException {
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(30, TimeUnit.SECONDS);
+        builder.readTimeout(30, TimeUnit.SECONDS);
+        builder.writeTimeout(30, TimeUnit.SECONDS);
+        OkHttpClient client = builder.build();
         Request request = new Request.Builder()
-                .url(dictionaryDivURL + wordToSearch)
+                .url(dictionaryURL + wordToSearch)
                 .get()
                 .build();
 
         Response response = client.newCall(request).execute();
+
+        /*OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("https://english-synonyms.p.rapidapi.com/" + wordToSearch)
+                .get()
+                .addHeader("x-rapidapi-host", "english-synonyms.p.rapidapi.com")
+                .addHeader("x-rapidapi-key", "0547043824mshc6f0e2f133b5910p116908jsned9738fc8068")
+                .build();*/
+
+        /*Response response = client.newCall(request).execute();*/
+
         if (response.isSuccessful()) {
             return extractSynonymsFromResponse(response, wordToSearch);
         }

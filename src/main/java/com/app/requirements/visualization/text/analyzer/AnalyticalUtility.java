@@ -1,11 +1,9 @@
 package com.app.requirements.visualization.text.analyzer;
 
-import com.app.requirements.visualization.text.analyzer.api.DictionaryDivResources;
+import com.app.requirements.visualization.text.analyzer.api.DictionaryAPIResources;
 import com.app.requirements.visualization.text.analyzer.api.NLPResources;
-import com.app.requirements.visualization.web.dto.UserStoryFormDto;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.*;
@@ -15,7 +13,7 @@ public class AnalyticalUtility {
 
     private final UserDictionaryEntitiesAnalyst userDictionaryEntitiesAnalyst = new UserDictionaryEntitiesAnalyst();
     private final NLPResources NLPResources = new NLPResources();
-    private final DictionaryDivResources dictionaryDivResources = new DictionaryDivResources();
+    private final DictionaryAPIResources dictionaryAPIResources = new DictionaryAPIResources();
 
     private final Map<String, String> tokenizedUserStoryMap = new HashMap<>();
     private Set<String> foundRoles = new HashSet<>();
@@ -87,66 +85,22 @@ public class AnalyticalUtility {
         Collection<String> listOfBenefitWords = firstPersonBenefitAction.values();
         Collection<String> listOfUserDescriptionActionWords = actionInUserDictionary.keySet();
         Collection<String> listOfUserDescriptionBenefitWords = benefitInUserDictionary.keySet();
+        Collection<String> listOfRoles = foundRoles;
 
         extractWordsAndSearch(listOfActionWords);
         extractWordsAndSearch(listOfBenefitWords);
         extractWordsAndSearch(listOfUserDescriptionActionWords);
         extractWordsAndSearch(listOfUserDescriptionBenefitWords);
+        extractWordsAndSearch(listOfRoles);
     }
 
     private void extractWordsAndSearch(Collection<String> listOfActionWords) throws IOException {
         for (String word : listOfActionWords) {
             String[] tokenizedArray = word.split("[[ ]*|[,]*|[\\.]*|[:]*|[/]*|[!]*|[?]*|[+]*]+");
             for (String wordToSearch : tokenizedArray) {
-                List<String> synonyms = dictionaryDivResources.performRequest(wordToSearch);
+                List<String> synonyms = dictionaryAPIResources.performRequest(wordToSearch);
                 synonymMap.put(wordToSearch, synonyms);
             }
         }
-    }
-
-
-    public String isStoryCorrect(UserStoryFormDto userStoryFormDto) {
-        String finalMessage = "";
-        String tempPersona = userStoryFormDto.getPersona();
-        String tempAction = userStoryFormDto.getAction();
-        String tempBenefit = userStoryFormDto.getBenefit();
-
-        if(tempPersona.isEmpty() || tempAction.isEmpty() || tempBenefit.isEmpty()) {
-            return "Some fields are missing, please try again...";
-        }
-
-        if(!StringUtils.isAlpha(tempPersona.replace(" ", "")) ||
-                !StringUtils.isAlpha(tempAction.replace(" ", "")) ||
-                !StringUtils.isAlpha(tempBenefit.replace(" ", ""))){
-            return "Text contains some special character which are not allowed. Please try again...";
-        }
-
-        if(!StringUtils.isAlpha(tempPersona.replace(" ", ""))) {
-            if(finalMessage.isEmpty())
-                finalMessage = finalMessage + "Too many numbers in the first field";
-            else
-                finalMessage = finalMessage + "<br/>" + "Too many numbers in the first field";
-        }
-        if(StringUtils.isNumeric(tempAction.replace(" ", ""))) {
-            if(finalMessage.isEmpty())
-                finalMessage = finalMessage + "Too many numbers in the second field";
-            else
-                finalMessage = finalMessage + "<br/>" + "Too many numbers in the second field";
-        }
-        if(StringUtils.isNumeric(tempBenefit.replace(" ", ""))) {
-            if(finalMessage.isEmpty())
-                finalMessage = finalMessage + "Too many numbers in the third field";
-            else
-                finalMessage = finalMessage + "<br/>" + "Too many numbers in the third field";
-        }
-
-        return finalMessage;
-
-    }
-
-    public void prepareStory(UserStoryFormDto userStoryFormDto) {
-        userStoryFormDto.setPersona(userStoryFormDto.getPersona().trim());
-        userStoryFormDto.setAction(userStoryFormDto.getAction().trim());
-        userStoryFormDto.setBenefit(userStoryFormDto.getBenefit().trim());
     }
 }

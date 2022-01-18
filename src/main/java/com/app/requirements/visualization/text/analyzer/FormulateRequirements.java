@@ -99,6 +99,10 @@ public class FormulateRequirements {
                 finalRequirements.add("You need an option to filter data. \n");
                 UIRequirements.add("filter");
                 break;
+            case "friend":
+                finalRequirements.add("You need to be able to add colleagues as friends in the virtual world. \n");
+                UIRequirements.add("friend");
+                break;
             case "enter":
                 finalRequirements.add("You need some text area so user can enter input. Perhaps some form would be useful.\n");
                 UIRequirements.add("input");
@@ -109,7 +113,7 @@ public class FormulateRequirements {
                 UIRequirements.add("table");
                 break;
             case "date":
-                finalRequirements.add("You must have structure to keep important dates. \n");
+                finalRequirements.add("You must have structure to keep important dates - e.g. calender. \n");
                 UIRequirements.add("date");
                 break;
             case "problem":
@@ -119,6 +123,10 @@ public class FormulateRequirements {
             case "profile":
                 finalRequirements.add("Participants (members) will need their profiles. \n");
                 UIRequirements.add("profile");
+                break;
+            case "share":
+                finalRequirements.add("You should think about a platform that allows you to share your content with other users. \n");
+                UIRequirements.add("socialPlatform");
                 break;
             case "update":
                 finalRequirements.add("Remember about function to refresh or update your data. \n");

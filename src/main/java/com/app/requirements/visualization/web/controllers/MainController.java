@@ -18,6 +18,11 @@ public class MainController {
         return "index";
     }
 
+    @GetMapping("guide")
+    public String guide() {
+        return "guide";
+    }
+
     @GetMapping("/visualize")
     public String visualize(Model model) {
         model.addAttribute("story", new UserStoryFormDto());

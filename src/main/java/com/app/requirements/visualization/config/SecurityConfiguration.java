@@ -40,17 +40,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
+        // Ignore URLs with such patterns
         web.ignoring().antMatchers( "/css/**", "/webjars/**", "/html/**", "/js/**", "/static/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //http.csrf().disable().cors();
+        // Set permissions on endpoints
         http.authorizeRequests().antMatchers(
                 "/registration**").permitAll()
+                // Our private endpoints
                 .anyRequest().authenticated()
+                // Disable CSRF and enable CORS
                 .and().csrf().disable().cors()
                 .and()
+                // Handle login and log-out
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()

@@ -4,8 +4,6 @@ import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.core.credential.AzureKeyCredential;
-import opennlp.tools.chunker.ChunkerME;
-import opennlp.tools.chunker.ChunkerModel;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.tokenize.Tokenizer;
@@ -24,17 +22,8 @@ public class NLPResources {
     private static final String KEY = "063bf9a88276445491e2592ac29efbc3";
     private static final String ENDPOINT = "https://nlp-oliwia.cognitiveservices.azure.com/";
     private final NavigableMap<String, String> posTagMap = new TreeMap<>();
-    private final List<CategorizedEntity> categorizedEntityList = new ArrayList<>();
     private final NavigableMap<String, String> firstPersonBenefitAction = new TreeMap<>();
     private final NavigableMap<String, String> firstPersonActionAction = new TreeMap<>();
-
-    public NavigableMap<String, String> getFirstPersonBenefitAction() {
-        return firstPersonBenefitAction;
-    }
-
-    public NavigableMap<String, String> getFirstPersonActionAction() {
-        return firstPersonActionAction;
-    }
 
     public TextAnalyticsClient authenticateClient() {
         return new TextAnalyticsClientBuilder()
@@ -44,7 +33,6 @@ public class NLPResources {
     }
 
     public List<CategorizedEntity> recognizeEntities(TextAnalyticsClient client, String userStoryAsOneString) {
-        //azure
         List<CategorizedEntity> categorizedEntityList = client.recognizeEntities(userStoryAsOneString).stream().collect(Collectors.toList());
         List<CategorizedEntity> personTypeList = new ArrayList<>();
         for (CategorizedEntity entity: categorizedEntityList ) {
@@ -53,24 +41,21 @@ public class NLPResources {
             }
         }
         return personTypeList;
-        //TODO to bedzie pierwszy reqiurement - ilość ról w aplikacji
     }
 
     public Set<String> extractKeyPhrases(TextAnalyticsClient client, String userStoryAsOneString)
     {
         Map<Integer, String> foundExpressions = new TreeMap<>();
-       // System.out.printf("Recognized phrases: %n");
         for (String keyPhrase : client.extractKeyPhrases(userStoryAsOneString)) {
             int index = userStoryAsOneString.indexOf(keyPhrase);
             foundExpressions.put(index, keyPhrase);
         }
-        return foundExpressions.values().stream().collect(Collectors.toSet());
+        return new HashSet<>(foundExpressions.values());
     }
 
-    public Map<String, String> extractPartsOfSpeech(String userStory) throws IOException {
+    public void extractPartsOfSpeech(String userStory) throws IOException {
         InputStream tokenModelIn;
         InputStream posModelIn;
-        InputStream chunkerModelIn;
 
         tokenModelIn = new FileInputStream("src/main/resources/en-token.bin");
         TokenizerModel tokenModel = new TokenizerModel(tokenModelIn);
@@ -80,24 +65,15 @@ public class NLPResources {
         POSModel posModel = new POSModel(posModelIn);
         POSTaggerME posTagger = new POSTaggerME(posModel);
 
-        chunkerModelIn = new FileInputStream("src/main/resources/en-chunker.bin");
-        ChunkerModel chunkerModelodel = new ChunkerModel(chunkerModelIn);
-        ChunkerME chunker = new ChunkerME(chunkerModelodel);
-
-       /* for (String partOfUserStory : userStoryMap.values()) {*/
             String[] tokens = tokenizer.tokenize(userStory);
             String[] tags = posTagger.tag(tokens);
-            String chunks[] = chunker.chunk(tokens, tags);
             if (tags.length == tokens.length) {
                 for (int i = 0; i < tags.length; i++) {
                     posTagMap.put(tokens[i], tags[i]);
                 }
             }
-        /*}*/
-
 
         removeFormConstants();
-        return posTagMap;
     }
 
     private void removeFormConstants() {

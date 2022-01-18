@@ -1,10 +1,11 @@
 package com.app.requirements.visualization.web.controllers;
 
 import com.app.requirements.visualization.text.analyzer.AnalyticalUtility;
-import com.app.requirements.visualization.text.analyzer.mappers.FileToMapMapper;
-import com.app.requirements.visualization.text.analyzer.mappers.UserStoryFormMapper;
+import com.app.requirements.visualization.web.mappers.FileToMapMapper;
+import com.app.requirements.visualization.web.mappers.UserStoryFormMapper;
 import com.app.requirements.visualization.web.dto.UserStoryFormDto;
 import com.app.requirements.visualization.web.models.Requirements;
+import com.app.requirements.visualization.web.validator.StoryValidator;
 import org.apache.commons.io.FilenameUtils;
 
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ public class UploadController {
     private FileToMapMapper fileToMapMapper = new FileToMapMapper();
     private UserStoryFormMapper userStoryFormMapper = new UserStoryFormMapper();
     private AnalyticalUtility analyticalUtility = new AnalyticalUtility();
+    private StoryValidator storyValidator = new StoryValidator();
 
     private Map<String, String> userDictionary = new HashMap<>();
     private Map<String, String> userStoryMap = new HashMap<>();
@@ -53,7 +55,7 @@ public class UploadController {
     }
 
     private boolean validate(MultipartFile file) {
-        return file.isEmpty() || !Objects.equals(FilenameUtils.getExtension(file.getOriginalFilename()), "txt");
+        return !Objects.equals(FilenameUtils.getExtension(file.getOriginalFilename()), "txt");
     }
 
     @ModelAttribute("story")
@@ -65,9 +67,9 @@ public class UploadController {
     public ResponseEntity<?> uploadUserStory(@ModelAttribute("story") UserStoryFormDto userStoryFormDto) {
         userStoryMap.clear();
         userStoryAll = "";
-        String errorMessage = analyticalUtility.isStoryCorrect(userStoryFormDto);
+        String errorMessage = storyValidator.isStoryCorrect(userStoryFormDto);
         if(errorMessage.isEmpty()) {
-            analyticalUtility.prepareStory(userStoryFormDto);
+            storyValidator.prepareStory(userStoryFormDto);
             userStoryMap = userStoryFormMapper.mapFormToMap(userStoryFormDto);
             userStoryAll = userStoryFormMapper.mapFormToString(userStoryFormDto);
             return ResponseEntity.ok("You successfully uploaded your story!");
@@ -78,7 +80,7 @@ public class UploadController {
     @PostMapping(value = "/startVisualize")
     public String startVisualization(RedirectAttributes redirectAttributes) throws IOException {
         Map<String, Set<String>> finalRequirements;
-        if (userDictionary.isEmpty() || userStoryMap.isEmpty()) {
+        if (userStoryMap.isEmpty()) {
             userDictionary.clear();
             userStoryMap.clear();
             return FALSE;
@@ -90,13 +92,14 @@ public class UploadController {
                 requirements.setColumnList(finalRequirements.get("columns"));
                 requirements.setUIList(finalRequirements.get("ui"));
                 requirements.setKeyPhrases(finalRequirements.get("keyPhrases"));
-                if(requirements.getStringList().isEmpty() && requirements.getColumnList().isEmpty()
+                if (requirements.getStringList().isEmpty() && requirements.getColumnList().isEmpty()
                         && requirements.getKeyPhrases().isEmpty() && requirements.getUIList().isEmpty()) {
                     requirements.setStringList(new HashSet<>(Collections.singletonList("No requirements were found :( ")));
                 }
                 redirectAttributes.addFlashAttribute("requirement", requirements);
             } catch (Exception e){
                 e.toString();
+                e.printStackTrace();
             }
             return "redirect:/result";
         }

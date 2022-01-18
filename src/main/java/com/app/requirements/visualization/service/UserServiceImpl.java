@@ -40,12 +40,4 @@ public class UserServiceImpl implements UserService{
        }
        return new com.app.requirements.visualization.service.UserDetails(user);
     }
-
-/*    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-                .collect(Collectors.toList());
-    }*/
-
-
 }
